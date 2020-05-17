@@ -8,8 +8,9 @@
     </div>
     <div class="button-row pt-2 text-center">
         <!-- <div class="col text-center"> -->            
-            <button *ngIf="!paused" mat-raised-button color="primary" (click)="startTimer();">START</button>
-            <button *ngIf="paused" mat-raised-button color="accent" (click)="pauseTimer();">PAUSE</button>
+            <button *ngIf="paused == 0" mat-raised-button color="primary" (click)="startTimer();">START</button>
+            <button *ngIf="paused == -1" mat-raised-button color="primary" (click)="startTimer();">RESUME</button>
+            <button *ngIf="paused > 0" mat-raised-button color="accent" (click)="pauseTimer();">PAUSE</button>
             <button mat-raised-button color="warn" (click)="resetTimer();">RESET</button>
         <!-- </div> -->
     </div>
