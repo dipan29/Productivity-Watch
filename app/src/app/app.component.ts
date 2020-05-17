@@ -17,6 +17,7 @@ export class AppComponent implements  OnInit {
   lastUpdated: any = new Date().getTime();
   timeElapsed: any = 0; // cookie
   state: any = 0;
+  changed: boolean = false;
 
   hours: any = 0;
   minutes: any = 0;
@@ -34,6 +35,7 @@ export class AppComponent implements  OnInit {
 
     if(this.state == 1){
       this.paused = 0;
+      this.changed = true;
       this.startTimer();
     }
 
@@ -41,7 +43,8 @@ export class AppComponent implements  OnInit {
 
   startTimer(): void{
     if(this.paused == null || this.paused <= 0){
-      this.lastUpdated = new Date().getTime();
+      if(!this.changed)
+        this.lastUpdated = new Date().getTime();
       this.state = 1;
       this.paused = setInterval(() => this.update(), 100);
     } 
@@ -70,8 +73,9 @@ export class AppComponent implements  OnInit {
     this.timeElapsed = 0;
     this.state = 0;
     this.hours = this.minutes = this.seconds = "00";
-    // this.cookieService.deleteAll();
+    this.changed = false;
     this.setCookies();
+    this.cookieService.deleteAll();
   }
 
   update(): void {
@@ -101,14 +105,17 @@ export class AppComponent implements  OnInit {
   }
 
   setCookies(){
-    this.cookieService.set('main-paused', this.paused);
-    this.cookieService.set('main-lastUpdated', this.lastUpdated);
-    this.cookieService.set('main-state', this.state);
-    this.cookieService.set('main-timeElapsed', this.timeElapsed);
+    let expiryDate = new Date();
+    expiryDate.setDate( expiryDate.getDate() + 1 );
+
+    this.cookieService.set('main-paused', this.paused, expiryDate);
+    this.cookieService.set('main-lastUpdated', this.lastUpdated, expiryDate);
+    this.cookieService.set('main-state', this.state, expiryDate);
+    this.cookieService.set('main-timeElapsed', this.timeElapsed, expiryDate);
     // Not Much
-    this.cookieService.set('main-hours', this.hours);
-    this.cookieService.set('main-minutes', this.minutes);
-    this.cookieService.set('main-seconds', this.seconds);
+    this.cookieService.set('main-hours', this.hours, expiryDate);
+    this.cookieService.set('main-minutes', this.minutes, expiryDate);
+    this.cookieService.set('main-seconds', this.seconds, expiryDate);
     
   }
 
