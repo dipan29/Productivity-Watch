@@ -1,16 +1,16 @@
 <div class="content">
     <div class="row pt-2">
         <div class="col text-center">
-            <div class="display">
-                <span class="hours">00</span><span class="minutes">00</span><span class="seconds">00</span>
+            <div class="main">
+                <span class="hours">{{hours}}</span><span class="minutes">{{minutes}}</span><span class="seconds">{{seconds}}</span>
             </div>
         </div>
     </div>
     <div class="button-row pt-2 text-center">
         <!-- <div class="col text-center"> -->
-            <button mat-raised-button color="primary">START</button>
-            <button mat-raised-button color="accent" style="display: none;">PAUSE</button>
-            <button mat-raised-button color="warn">RESET</button>
+            <button mat-raised-button color="primary" (click)="startTimer(this);">START</button>
+            <button mat-raised-button color="accent" (click)="pauseTimer(this);">PAUSE</button>
+            <button mat-raised-button color="warn" (click)="stopTimer(this);">RESET</button>
         <!-- </div> -->
     </div>
 </div>

@@ -32,7 +32,7 @@ h1, h2, h3 {
   padding-top: 20px;
 }
 
-.display {
+.main {
   font-size: 50px;
   font-family: 'Poppins', sans-serif;
   text-align: center;
@@ -41,7 +41,7 @@ h1, h2, h3 {
   padding-bottom: 30px;
 }
 
-.display :not(:last-child):after {
+.main :not(:last-child):after {
   content: ":";
   padding-left: 3px;
   padding-right: 3px;
