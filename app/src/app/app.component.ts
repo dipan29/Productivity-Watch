@@ -10,86 +10,65 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements  OnInit {
   title = 'My Timer';
 
-  interval; hrs = 0; mins = 0; secs = 0;
-  hours; minutes; seconds; // Main Timer
-  start_time; end_time; lastUpdateTime;
-  main_timer = 0;
+  paused: any = 0;
+  startTime: any;
+  endTime: any;
+  lastUpdated: any = new Date().getTime();
+  timeElapsed: any = 0;
+
+  hours: any;
+  minutes: any;
+  seconds: any;
 
   ngOnInit(){
-      this.updateMain();
+    this.hours = ('00' + 0).substr(-2);
+    this.minutes = ('00' + 0).substr(-2);
+    this.seconds = ('00' + 0).substr(-2);
   }
 
-  updateMain(){
-      // this.hours = this.minutes = this.seconds = "00"
-      this.hours = this.pad(this.hrs);
-      this.minutes = this.pad(this.mins);
-      this.seconds = this.pad(this.secs);
+  startTimer(){
+    if(!this.paused){
+      this.lastUpdated = new Date().getTime();
+      this.paused = setInterval(this.update, 1);
+    }
+  }
+  
+  pauseTimer(){
+    var t = this.paused;
+      if(t) {
+          clearInterval(this.paused);
+          this.paused = 0;
+          // set stop cookie = 1; 
+      } else {
+          this.lastUpdated = new Date().getTime();
+          this.paused = setInterval(this.update, 1);
+          // Change the cookie & set stop = 0
+      }
   }
 
-  pad (n) {
-    return ('00' + n).substr(-2);
+  resetTimer(){
+    clearInterval(this.paused);
+        this.paused = 0;
+        this.timeElapsed = 0;
   }
 
   update(){
-    var now = new Date().getTime(),
-        dt = now - this.lastUpdateTime;
+    var now = new Date().getTime();
+    var dt = now - this.lastUpdated;
+    this.timeElapsed += dt;
 
-        this.main_timer += dt;
+    let val = new Date(this.timeElapsed);
+    val.setHours(val.getHours() - 5); 
+    val.setMinutes(val.getMinutes() - 30);
+    console.log(val);
+    // this.hrs = val.getHours();
+    // this.mins = val.getMinutes();
+    // this.secs = val.getSeconds();
 
-        var time = new Date(this.main_timer);
-        // IST Conversion
-        time.setHours(time.getHours() - 5); 
-        time.setMinutes(time.getMinutes() - 30);
+    this.hours = val.getHours();
+    this.minutes = val.getMinutes();
+    this.seconds = val.getSeconds();
 
-        this.hrs = (time.getHours());
-        this.mins = (time.getMinutes());
-        this.secs = (time.getSeconds());
-
-        this.updateMain();
-        // cents.innerHTML = pad(Math.floor(time.getMilliseconds() / 10));
-
-        this.lastUpdateTime = now;
+    this.lastUpdated = now;
   }
-
-  startTimer(e){
-    // e.preventDefault();
-    // start.style.display = 'none';
-    //     stop.style.display = 'block';
-    if (!this.interval) {
-        this.lastUpdateTime = new Date().getTime();
-        this.interval = setInterval(this.update, 1);
-    }
-  }
-
-  pauseTimer (e) {
-    // e.preventDefault();
-    var t = this.interval;
-    if(t) {
-        // start.style.display = 'block';
-        // stop.style.display = 'none';
-        clearInterval(this.interval);
-        this.interval = 0;
-        // set stop cookie = 1; 
-    } else {
-        // start.style.display = 'none';
-        // stop.style.display = 'block';
-        this.lastUpdateTime = new Date().getTime();
-        this.interval = setInterval(this.update, 1);
-        // Change the cookie & set stop = 0
-    }
-  }
-
-  stopTimer (e) {
-    // e.preventDefault();
-    // stopTimer();
-    clearInterval(this.interval);
-    this.interval = 0;
-    // start.style.display = 'block';
-    // stop.style.display = 'none';
-
-    this.main_timer = 0;
-
-    this.minutes = this.seconds = this.hours = this.pad(0);
-  }
-
 }
