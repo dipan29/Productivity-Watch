@@ -1,0 +1,73 @@
+body {
+  background: rgb(181,202,227);
+  background: -moz-linear-gradient(340deg, rgba(181,202,227,1) 0%, rgba(255,255,255,1) 100%);
+  background: -webkit-linear-gradient(340deg, rgba(181,202,227,1) 0%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(340deg, rgba(181,202,227,1) 0%, rgba(255,255,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b5cae3",endColorstr="#ffffff",GradientType=1);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+.stopwatch {
+  /* width: 300px; */
+  width: 90%;
+  max-width: 300px;
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 0 4px rgba(0, 0, 0, 0.75), 0 0 1px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+}
+.stopwatch, .stopwatch * {
+  transition: all 0.15s ease-out;
+}
+.stopwatch .controls {
+  display: flex;
+}
+
+.stopwatch .controls button {
+  flex-grow: 1;
+  margin: 0 5px 4px;
+  padding: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 4px rgba(0, 0, 0, 0.75);
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+.stopwatch .controls button:active {
+  margin-bottom: 0;
+  margin-top: 4px;
+  box-shadow: none;
+}
+.stopwatch .controls .start {
+  background-color: #5d5;
+}
+.stopwatch .controls .start:hover {
+  background-color: #6e6;
+}
+.stopwatch .controls .stop {
+  background-color: #55d;
+  display: none;
+}
+.stopwatch .controls .stop:hover {
+  background-color: #66e;
+}
+.stopwatch .controls .reset {
+  background-color: #d55;
+}
+.stopwatch .controls .reset:hover {
+  background-color: #e66;
+}
+.stopwatch .display {
+  font-size: 50px;
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 10px;
+}
+.stopwatch .display :not(:last-child):after {
+  content: ":";
+}
