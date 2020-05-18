@@ -16,10 +16,38 @@
         <!-- </div> -->
     </div>
     <!-- Sub Timers -->
+    <div *ngIf="reset" class="row mt-3">
+        <div class="col text-center">
+            <h4 class="text-capitalize">What are you planning to do Today?</h4>
+        </div>
+    </div>
+    <!-- List of Current Tags -->
+
+    <div class="row row-tags" *ngIf="add_placeholder != 'Your Task Tag'">
+        <div *ngFor="let tag of tags; let i = index" class="col-lg-4 col-4" id="t_{{i}}">
+            <div class="alert alert-light alert-dismissible fade show" role="alert">
+                {{tag.name}}
+                <button type="button" class="close" (click)="deleteTag(i)" data-dismiss="alert" aria-label="Close" id="tx_{{i}}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="reset" class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <input #textbox type="text" class="form-control" placeholder="{{add_placeholder}}" [(ngModel)]="tag_name" required aria-describedby="tag-add">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-success" type="button" id="tag-add" (click)="addTag();">ADD</button>
+                </div>
+              </div>
+        </div>
+    </div>  
 
 
     <!-- Laps Div -->
-    <div *ngIf="!reset" class="row mt-5">
+    <div *ngIf="!reset" class="row mt-3">
         <div class="col text-center">
             <h4>LAPS</h4>
         </div>
@@ -29,10 +57,10 @@
         <div *ngFor="let lap of laps; let i = index" class="row" id="l_{{i}}">
             <div class="col">
                 <div class="alert alert-light alert-dismissible fade show" role="alert">
-                <strong>{{lap.name}}</strong>
-                <button type="button" class="close" (click)="closeLap(i)" data-dismiss="alert" aria-label="Close" id="lx_{{i}}">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                    <strong>{{lap.name}}</strong>
+                    <button type="button" class="close" (click)="closeLap(i)" data-dismiss="alert" aria-label="Close" id="lx_{{i}}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             </div>
         </div>

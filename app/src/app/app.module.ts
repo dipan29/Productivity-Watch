@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatDividerModule,
     FlexLayoutModule,
     MatCardModule,
+    FormsModule,
     MatButtonModule
   ],
   providers: [],

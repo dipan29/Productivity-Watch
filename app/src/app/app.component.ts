@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { generate } from 'shortid';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,10 @@ export class AppComponent implements  OnInit {
 
   laps: any = [];
 
+  add_placeholder: string = 'Your Task Tag';
+  public tag_name : string = '';
+  tags: any = [];
+
   constructor(
     private cookieService: CookieService
   ) {}
@@ -49,6 +54,7 @@ export class AppComponent implements  OnInit {
     }
 
   }
+
 
   startTimer(): void{
     if(this.paused == null || this.paused <= 0){
@@ -217,6 +223,23 @@ export class AppComponent implements  OnInit {
       this.seconds = parseInt(this.cookieService.get('main-seconds'));
     } else {
       this.seconds = 0;
+    }
+  }
+
+  addTag(){
+    let id = generate();
+    this.tags.push({id, name: this.tag_name});
+    // this.tags.push(this.tag_name);
+    this.tag_name = '';
+    this.add_placeholder = "Another Task Tag";
+    // console.log(this.tags);
+  }
+
+  deleteTag(i){
+    this.tags.splice(i, 1);
+    // Update Cookie -
+    if (this.tags === undefined || this.tags.length == 0) {
+      this.add_placeholder = "Your Task Tag";
     }
   }
 }

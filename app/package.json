@@ -27,6 +27,8 @@
     "ngx-cookie-service": "^3.0.4",
     "popper.js": "^1.16.1",
     "rxjs": "~6.5.4",
+    "short-id": "0.1.0-1",
+    "shortid": "^2.2.15",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },

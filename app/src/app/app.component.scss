@@ -17,6 +17,12 @@ h4 {
   font-size: 24px;
 }
 
+h5 {
+  font-family:  'Comfortaa', cursive;
+  font-weight: 900;
+  font-size: 18px;
+}
+
 .tags {
   font-family: 'Satisfy', cursive;
 }
@@ -32,6 +38,11 @@ h4 {
 
 .text-uppercase {
   text-transform: uppercase;
+}
+
+.row-tags{
+  font-size: 12px;
+  // font-family: 'Satisfy', cursive;
 }
 
 .row-laps{
@@ -89,8 +100,16 @@ h4 {
   padding-top: 50px;
 }
 
+.pt-3{
+  padding-top: 30px;
+}
+
 .mt-5{
   margin-top: 50px;
+}
+
+.mt-3{
+  margin-top: 30px !important;
 }
 
 .py-5{
