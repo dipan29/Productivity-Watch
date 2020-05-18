@@ -18,6 +18,8 @@ export class AppComponent implements  OnInit {
   timeElapsed: any = 0; // cookie
   state: any = 0;
   changed: boolean = false;
+  reset: number = 1;
+  reset_text: string = "STOP"
 
   hours: any = 0;
   minutes: any = 0;
@@ -53,6 +55,8 @@ export class AppComponent implements  OnInit {
       if(!this.changed)
         this.lastUpdated = new Date().getTime();
       this.state = 1;
+      this.reset_text = "STOP";
+      this.reset = 0;
       this.paused = setInterval(() => this.update(), 100);
     } 
   }
@@ -79,7 +83,12 @@ export class AppComponent implements  OnInit {
     this.paused = 0;
     this.timeElapsed = 0;
     this.state = 0;
-    this.hours = this.minutes = this.seconds = "00";
+    if(this.reset_text == "RESET" && this.reset == 0){
+      this.laps = [];
+      this.reset = 1;
+      this.hours = this.minutes = this.seconds = "00";
+    }
+    this.reset_text = "RESET";
     this.changed = false;
     this.setCookies();
     this.cookieService.deleteAll();
