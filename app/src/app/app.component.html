@@ -6,7 +6,7 @@
             </div>
         </div>
     </div>
-    <div class="button-row pt-2 text-center">
+    <div class="button-row pt-2 mb-3 text-center">
         <!-- <div class="col text-center"> -->            
             <button *ngIf="paused == 0" mat-raised-button color="primary" (click)="startTimer();">START</button>
             <button *ngIf="paused == -1" mat-raised-button color="primary" (click)="startTimer();">RESUME</button>
@@ -16,23 +16,12 @@
         <!-- </div> -->
     </div>
     <!-- Sub Timers -->
-    <div *ngIf="reset" class="row mt-3">
+    <div *ngIf="reset" class="row">
         <div class="col text-center">
             <h4 class="text-capitalize">What are you planning to do Today?</h4>
         </div>
     </div>
     <!-- List of Current Tags -->
-
-    <div class="row row-tags" *ngIf="add_placeholder != 'Your Task Tag'">
-        <div *ngFor="let tag of tags; let i = index" class="col-lg-4 col-4" id="t_{{i}}">
-            <div class="alert alert-light alert-dismissible fade show" role="alert">
-                {{tag.name}}
-                <button type="button" class="close" (click)="deleteTag(i)" data-dismiss="alert" aria-label="Close" id="tx_{{i}}">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <div *ngIf="reset" class="row">
         <div class="col">
@@ -45,6 +34,19 @@
         </div>
     </div>  
 
+    <div class="row-tags row-scroll" *ngIf="add_placeholder != 'Your Task'">
+        <div *ngFor="let tag of tags; let i = index" class="row" id="t_{{i}}">
+            <div class="col">
+                <div class="alert alert-dismissible fade show" style="background-color: {{tag.colour}}" role="alert">
+                    <strong>{{tag.name}}</strong>
+                    <button *ngIf="reset" type="button" class="close" (click)="deleteTag(i)" data-dismiss="alert" aria-label="Close" id="tx_{{i}}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Laps Div -->
     <div *ngIf="!reset" class="row mt-3">
@@ -53,7 +55,7 @@
         </div>
     </div>
 
-    <div class="row-laps">
+    <div class="row-scroll">
         <div *ngFor="let lap of laps; let i = index" class="row" id="l_{{i}}">
             <div class="col">
                 <div class="alert alert-light alert-dismissible fade show" role="alert">

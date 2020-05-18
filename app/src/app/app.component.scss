@@ -41,18 +41,22 @@ h5 {
 }
 
 .row-tags{
-  font-size: 12px;
-  // font-family: 'Satisfy', cursive;
+  // font-size: 12px;
+  font-family: 'Comfortaa', cursive;
 }
 
-.row-laps{
+.row-tags .alert{
+  color: white; 
+}
+
+.row-scroll{
   max-height: 235px !important;
   overflow-x: hidden;
   overflow-y: scroll;
 }
 
 @media only screen and (min-width: 600px){
-  .row-laps{
+  .row-scroll{
     padding-right: 10px;
   }
 
@@ -110,6 +114,10 @@ h5 {
 
 .mt-3{
   margin-top: 30px !important;
+}
+
+.mb-3 {
+  margin-bottom: 30px !important;
 }
 
 .py-5{

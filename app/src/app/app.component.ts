@@ -12,6 +12,9 @@ import { generate } from 'shortid';
 export class AppComponent implements  OnInit {
   title = 'My Timer';
 
+  myColours: string[] = ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b"];
+  color_set1: string[] = this.myColours;
+
   paused: any = null;  // cookie
   startTime: any;
   endTime: any;
@@ -28,7 +31,7 @@ export class AppComponent implements  OnInit {
 
   laps: any = [];
 
-  add_placeholder: string = 'Your Task Tag';
+  add_placeholder: string = 'Your Task';
   public tag_name : string = '';
   tags: any = [];
 
@@ -92,6 +95,7 @@ export class AppComponent implements  OnInit {
     if(this.reset_text == "RESET" && this.reset == 0){
       this.laps = [];
       this.reset = 1;
+      this.tags = [];
       this.hours = this.minutes = this.seconds = "00";
     }
     this.reset_text = "RESET";
@@ -227,19 +231,27 @@ export class AppComponent implements  OnInit {
   }
 
   addTag(){
-    let id = generate();
-    this.tags.push({id, name: this.tag_name});
-    // this.tags.push(this.tag_name);
-    this.tag_name = '';
-    this.add_placeholder = "Another Task Tag";
+    if(this.tag_name != ''){
+      let id = generate();
+      var colr = this.color_set1[Math.floor(Math.random() * this.color_set1.length)];
+      this.tags.push({id, colour: colr, name: this.tag_name});
+      // this.tags.push(this.tag_name);
+      for( var i = 0; i < this.color_set1.length; i++){ 
+        if ( this.color_set1[i] === colr) { 
+          this.color_set1.splice(i, 1); 
+        }
+      }
+      this.tag_name = '';
+      this.add_placeholder = "Another Task";
     // console.log(this.tags);
+    }
   }
 
   deleteTag(i){
     this.tags.splice(i, 1);
     // Update Cookie -
     if (this.tags === undefined || this.tags.length == 0) {
-      this.add_placeholder = "Your Task Tag";
+      this.add_placeholder = "Your Task";
     }
   }
 }
