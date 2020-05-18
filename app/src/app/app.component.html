@@ -1,42 +1,128 @@
 <div class="content">
-    <div class="row pt-2">
-        <div class="col text-center">
-            <div class="main">
-                <span class="hours">{{hours}}</span><span class="minutes">{{minutes}}</span><span class="seconds">{{seconds}}</span>
-            </div>
+  <div class="row pt-2">
+    <div class="col text-center">
+      <div class="main">
+        <span class="hours">{{ hours }}</span
+        ><span class="minutes">{{ minutes }}</span
+        ><span class="seconds">{{ seconds }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="button-row pt-2 text-center">
+    <!-- <div class="col text-center"> -->
+    <button
+      *ngIf="paused == 0"
+      mat-raised-button
+      color="primary"
+      (click)="startTimer()"
+    >
+      START
+    </button>
+    <button
+      *ngIf="paused == -1"
+      mat-raised-button
+      color="primary"
+      (click)="startTimer()"
+    >
+      RESUME
+    </button>
+    <button
+      *ngIf="paused > 0"
+      mat-raised-button
+      color="accent"
+      (click)="pauseTimer()"
+    >
+      PAUSE
+    </button>
+    <button *ngIf="state" mat-raised-button (click)="lapTimer()">LAP</button>
+    <button mat-raised-button color="warn" (click)="resetTimer()">
+      {{ reset_text }}
+    </button>
+    <!-- </div> -->
+  </div>
+
+  <div class="row pb-3 mt-3">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+      <form
+        name="activity_form"
+        (submit)="addNewActivity($event)"
+        id="activity_form"
+      >
+        <div class="input-group">
+          <input
+            [(ngModel)]="activityName"
+            name="activityName"
+            type="text"
+            class="form-control"
+            id="activity_tag"
+            placeholder="Activity Tag"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-add btn-primary" type="submit">ADD</button>
+          </div>
         </div>
+      </form>
     </div>
-    <div class="button-row pt-2 text-center">
-        <!-- <div class="col text-center"> -->            
-            <button *ngIf="paused == 0" mat-raised-button color="primary" (click)="startTimer();">START</button>
-            <button *ngIf="paused == -1" mat-raised-button color="primary" (click)="startTimer();">RESUME</button>
-            <button *ngIf="paused > 0" mat-raised-button color="accent" (click)="pauseTimer();">PAUSE</button>
-            <button *ngIf="state" mat-raised-button (click)="lapTimer();">LAP</button>
-            <button mat-raised-button color="warn" (click)="resetTimer();">{{reset_text}}</button>
-        <!-- </div> -->
-    </div>
-    <!-- Sub Timers -->
+    <div class="col-lg-1"></div>
+  </div>
+  <!-- Sub Timers -->
 
-
-    <!-- Laps Div -->
-    <div *ngIf="!reset" class="row mt-5">
-        <div class="col text-center">
-            <h4>LAPS</h4>
+  <div class="row mt-3">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+      <div class="row">
+        <div
+          class="col-12"
+          *ngFor="let activity of activityList; let i = index"
+          id="a_{{ activity.id }}"
+        >
+          <div
+            class="alert alert-light alert-dismissible fade show"
+            role="alert"
+            (click)="activity.pauseTimer()"
+          >
+            {{ activity.name }} -
+            <strong
+              >{{ activity.hours }}:{{ activity.minutes }}:{{
+                activity.seconds
+              }}</strong
+            >
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
-    <div class="row-laps">
-        <div *ngFor="let lap of laps; let i = index" class="row" id="l_{{i}}">
-            <div class="col">
-                <div class="alert alert-light alert-dismissible fade show" role="alert">
-                <strong>{{lap.name}}</strong>
-                <button type="button" class="close" (click)="closeLap(i)" data-dismiss="alert" aria-label="Close" id="lx_{{i}}">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-            </div>
+    <div class="col-lg-1"></div>
+  </div>
+
+  <!-- Laps Div -->
+  <div *ngIf="!reset" class="row mt-5">
+    <div class="col text-center">
+      <h4>LAPS</h4>
+    </div>
+  </div>
+
+  <div class="row-laps">
+    <div *ngFor="let lap of laps; let i = index" class="row" id="l_{{ i }}">
+      <div class="col">
+        <div class="alert alert-light alert-dismissible fade show" role="alert">
+          <strong>{{ lap.name }}</strong>
+          <button
+            type="button"
+            class="close"
+            (click)="closeLap(i)"
+            data-dismiss="alert"
+            aria-label="Close"
+            id="lx_{{ i }}"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+      </div>
     </div>
-    
-
+  </div>
 </div>
