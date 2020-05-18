@@ -11,6 +11,12 @@ h1, h2, h3 {
   font-weight: 900;
 }
 
+h4 {
+  font-family:  'Comfortaa', cursive;
+  font-weight: 900;
+  font-size: 24px;
+}
+
 .tags {
   font-family: 'Satisfy', cursive;
 }
@@ -30,6 +36,34 @@ h1, h2, h3 {
 
 .pt-2 {
   padding-top: 20px;
+}
+
+.my-1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.my-2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.my-5 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.pt-5{
+  padding-top: 50px;
+}
+
+.mt-5{
+  margin-top: 50px;
+}
+
+.py-5{
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .main {

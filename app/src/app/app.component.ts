@@ -23,6 +23,8 @@ export class AppComponent implements  OnInit {
   minutes: any = 0;
   seconds: any = 0;
 
+  laps: any = [];
+
   constructor(
     private cookieService: CookieService
   ) {}
@@ -33,6 +35,11 @@ export class AppComponent implements  OnInit {
 
     this.initiate(this.hours, this.minutes, this.seconds);
 
+    var json_str = this.cookieService.get('main-laps');
+    if(json_str.length > 1){
+      let laps = JSON.parse(json_str);
+      this.laps = laps;
+    }
     if(this.state == 1){
       this.paused = 0;
       this.changed = true;
@@ -78,6 +85,31 @@ export class AppComponent implements  OnInit {
     this.cookieService.deleteAll();
   }
 
+  lapTimer(){
+    let currentTime = this.timeElapsed;
+    let val = new Date(currentTime);
+    val.setHours(val.getHours() - 5); 
+    val.setMinutes(val.getMinutes() - 30);
+    let name = this.pad(val.getHours()) + ' : ' + this.pad(val.getMinutes()) + ' : ' + this.pad(val.getSeconds());
+    let hours = this.pad(val.getHours());
+    let minutes = this.pad(val.getMinutes());
+    let seconds = this.pad(val.getSeconds());
+    let lap = {name, hours, minutes, seconds};
+    this.laps.unshift(lap);
+
+    // Set Cookie -
+    let expiryDate = new Date();
+    expiryDate.setDate( expiryDate.getDate() + 1 );
+    this.cookieService.delete('main-laps');
+    var json_str = JSON.stringify(this.laps);
+    // console.log(this.laps);
+    this.cookieService.set('main-laps', json_str, expiryDate);
+  }
+
+  pad(n){
+    return ('00' + n).substr(-2);
+  }
+
   update(): void {
     var now = new Date().getTime();
     var dt = now - this.lastUpdated;
@@ -102,6 +134,20 @@ export class AppComponent implements  OnInit {
     this.hours = ('00' + h).substr(-2);
     this.minutes = ('00' + m).substr(-2);
     this.seconds = ('00' + n).substr(-2);
+  }
+
+  closeLap(i){
+    this.laps.splice(i, 1);
+    // Update Cookie -
+    if (this.laps === undefined || this.laps.length == 0) {
+      this.cookieService.delete('main-laps');
+    } else {
+      let expiryDate = new Date();
+      expiryDate.setDate( expiryDate.getDate() + 1 );
+      this.cookieService.delete('main-laps');
+      var json_str = JSON.stringify(this.laps);
+      this.cookieService.set('main-laps', json_str, expiryDate);
+    }
   }
 
   setCookies(){
