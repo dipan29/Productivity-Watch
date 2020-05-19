@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { generate } from 'shortid';
 import { ActivityListItem } from './activity-list-item';
+// import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-
 
 export class AppComponent implements  OnInit {
   title = 'My Timer';
@@ -31,6 +32,7 @@ export class AppComponent implements  OnInit {
   seconds: any = 0;
 
   laps: any = [];
+  // lap_name: any = '';
 
   add_placeholder: string = 'Your Task';
   public tag_name : string = '';
@@ -131,7 +133,8 @@ export class AppComponent implements  OnInit {
     let hours = this.pad(val.getHours());
     let minutes = this.pad(val.getMinutes());
     let seconds = this.pad(val.getSeconds());
-    let lap = {name, hours, minutes, seconds};
+    let tag = '';
+    let lap = {name, hours, minutes, seconds, tag};
     this.laps.unshift(lap);
 
     // Set Cookie -
@@ -141,6 +144,25 @@ export class AppComponent implements  OnInit {
     var json_str = JSON.stringify(this.laps);
     // console.log(this.laps);
     this.cookieService.set('main-laps', json_str, expiryDate);
+  }
+
+
+  nameLap(i){
+    var lap_def = '';
+    if(this.laps[i].tag.length > 0){
+      lap_def = this.laps[i].tag;
+    } else {
+      lap_def = '';
+    }
+    let lap_name: string = prompt("Customize the Lap Name - ", lap_def);
+    if(lap_name.length > 0){
+      this.laps[i].tag = lap_name;
+      let expiryDate = new Date();
+      expiryDate.setDate( expiryDate.getDate() + 1 );
+      this.cookieService.delete('main-laps');
+      var json_str = JSON.stringify(this.laps);
+      this.cookieService.set('main-laps', json_str, expiryDate);
+    }
   }
 
   pad(n){

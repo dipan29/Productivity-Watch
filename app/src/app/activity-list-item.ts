@@ -71,7 +71,7 @@ export class ActivityListItem {
       this.state = 0;
       if (this.reset_text == 'RESET' && this.reset == 0) {
         this.reset = 1;
-        this.hours = this.minutes = this.seconds = '00';
+        // this.hours = this.minutes = this.seconds = '00';
       }
       this.reset_text = 'RESET';
       this.changed = false;

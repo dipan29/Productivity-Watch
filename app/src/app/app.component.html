@@ -67,7 +67,6 @@
         </div>
     </div>
 
-
     <!-- Laps Div -->
     <div *ngIf="!reset && laps.length > 0" class="row mt-3">
         <div class="col text-center">
@@ -78,8 +77,8 @@
     <div class="row-scroll">
         <div *ngFor="let lap of laps; let i = index" class="row" id="l_{{i}}">
             <div class="col">
-                <div class="alert alert-light alert-dismissible fade show" role="alert">
-                    <strong>{{lap.name}}</strong>
+                <div class="alert alert-light alert-dismissible fade show" role="alert">                    
+                    <strong (click)="nameLap(i);">{{lap.name}}</strong><span *ngIf="lap.tag.length > 0 " (click)="nameLap(i);"> - {{lap.tag}}</span>
                     <button type="button" class="close" (click)="closeLap(i)" data-dismiss="alert" aria-label="Close" id="lx_{{i}}">
                         <span aria-hidden="true">&times;</span>
                     </button>
