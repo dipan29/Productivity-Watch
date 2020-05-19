@@ -34,14 +34,34 @@
         </div>
     </div>  
 
+    <div *ngIf="!reset && activities.length > 0" class="row mt-3">
+        <div class="col text-center">
+            <h4>My Tasks</h4>
+        </div>
+    </div>
+
     <div class="row-tags row-scroll" *ngIf="add_placeholder != 'Your Task'">
-        <div *ngFor="let tag of tags; let i = index" class="row" id="t_{{i}}">
+        <div *ngFor="let activity of activities; let i = index" class="row" id="t_{{i}}">
             <div class="col">
-                <div class="alert alert-dismissible fade show" style="background-color: {{tag.colour}}" role="alert">
-                    <strong>{{tag.name}}</strong>
-                    <button *ngIf="reset" type="button" class="close" (click)="deleteTag(i)" data-dismiss="alert" aria-label="Close" id="tx_{{i}}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="alert alert-dismissible fade show" style="background-color: {{activity.colour}}" role="alert">
+                    <div *ngIf="reset">
+                        <strong>{{activity.name}}</strong>
+                        <div *ngIf="reset" >
+                            <button type="button" class="close" (click)="deleteTag(i)" data-dismiss="alert" aria-label="Close" id="tx_{{i}}">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="!reset">
+                        <strong>{{activity.name}}</strong>&nbsp; - &nbsp;{{activity.hours}} : {{activity.minutes}} : {{activity.seconds}}
+                        <button *ngIf="!activity.getState() && reset_text == 'STOP'" type="button" class="close" (click)="activity.timerToggle();" id="tp_{{i}}">
+                            <span aria-hidden="true">&#9658;</span>
+                        </button>
+                        <button *ngIf="activity.getState() && reset_text == 'STOP'" type="button" class="close" (click)="activity.timerToggle();" id="ts_{{i}}">
+                            <span aria-hidden="true">&#9616;&#9616;</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,7 +69,7 @@
 
 
     <!-- Laps Div -->
-    <div *ngIf="!reset" class="row mt-3">
+    <div *ngIf="!reset && laps.length > 0" class="row mt-3">
         <div class="col text-center">
             <h4>LAPS</h4>
         </div>

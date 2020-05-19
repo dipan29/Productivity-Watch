@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { generate } from 'shortid';
+import { ActivityListItem } from './activity-list-item';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,7 @@ export class AppComponent implements  OnInit {
   add_placeholder: string = 'Your Task';
   public tag_name : string = '';
   tags: any = [];
+  activities: ActivityListItem[] = [];
 
   constructor(
     private cookieService: CookieService
@@ -58,11 +60,20 @@ export class AppComponent implements  OnInit {
 
   }
 
-
   startTimer(): void{
+    if(this.reset_text == "RESET"){
+      this.resetTimer();
+    }
+
     if(this.paused == null || this.paused <= 0){
       if(!this.changed)
         this.lastUpdated = new Date().getTime();
+        
+      this.activities.forEach(activity => {
+        if(activity.lastState){
+          activity.startTimer();
+        }
+      });
       this.state = 1;
       this.reset_text = "STOP";
       this.reset = 0;
@@ -72,6 +83,10 @@ export class AppComponent implements  OnInit {
   
   pauseTimer(){
     var t = this.paused;
+    this.activities.forEach(activity => {
+      if(activity.getState())
+        activity.pauseTimer();
+    });
       if(t) {
           clearInterval(this.paused);
           this.paused = -1;
@@ -92,10 +107,13 @@ export class AppComponent implements  OnInit {
     this.paused = 0;
     this.timeElapsed = 0;
     this.state = 0;
+    this.activities.forEach(activity => {
+      activity.resetTimer();
+    });
     if(this.reset_text == "RESET" && this.reset == 0){
       this.laps = [];
       this.reset = 1;
-      this.tags = [];
+      this.activities = [];
       this.hours = this.minutes = this.seconds = "00";
     }
     this.reset_text = "RESET";
@@ -233,24 +251,25 @@ export class AppComponent implements  OnInit {
   addTag(){
     if(this.tag_name != ''){
       let id = generate();
-      var colr = this.color_set1[Math.floor(Math.random() * this.color_set1.length)];
-      this.tags.push({id, colour: colr, name: this.tag_name});
-      // this.tags.push(this.tag_name);
+      var colour = this.color_set1[Math.floor(Math.random() * this.color_set1.length)];
+      let activity = new ActivityListItem(id, colour, this.tag_name);
+      this.activities.push(activity);
+      // this.activities.push(this.tag_name);
       for( var i = 0; i < this.color_set1.length; i++){ 
-        if ( this.color_set1[i] === colr) { 
+        if ( this.color_set1[i] === colour) { 
           this.color_set1.splice(i, 1); 
         }
       }
       this.tag_name = '';
       this.add_placeholder = "Another Task";
-    // console.log(this.tags);
+    // console.log(this.activities);
     }
   }
 
   deleteTag(i){
-    this.tags.splice(i, 1);
+    this.activities.splice(i, 1);
     // Update Cookie -
-    if (this.tags === undefined || this.tags.length == 0) {
+    if (this.activities === undefined || this.activities.length == 0) {
       this.add_placeholder = "Your Task";
     }
   }
