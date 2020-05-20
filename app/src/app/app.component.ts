@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { generate } from 'shortid';
 import { ActivityListItem } from './activity-list-item';
@@ -11,7 +11,7 @@ import { ActivityListItem } from './activity-list-item';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements  OnInit {
+export class AppComponent implements  OnInit, OnDestroy {
   title = 'My Timer';
 
   myColours: string[] = ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b"];
@@ -59,7 +59,11 @@ export class AppComponent implements  OnInit {
       this.changed = true;
       this.startTimer();
     }
+    this.fetchTimerState();
+  }
 
+  public ngOnDestroy(): void{
+    // this.saveTimerState();
   }
 
   startTimer(): void{
@@ -116,6 +120,7 @@ export class AppComponent implements  OnInit {
       this.laps = [];
       this.reset = 1;
       this.activities = [];
+      this.clearSubTimers();
       this.hours = this.minutes = this.seconds = "00";
     }
     this.reset_text = "RESET";
@@ -187,6 +192,7 @@ export class AppComponent implements  OnInit {
 
     this.lastUpdated = now;
     this.setCookies();
+    this.saveTimerState();
   }
   
   initiate(h,m,n){
@@ -285,14 +291,67 @@ export class AppComponent implements  OnInit {
       this.tag_name = '';
       this.add_placeholder = "Another Task";
     // console.log(this.activities);
+      this.saveTimerState();
     }
   }
 
   deleteTag(i){
     this.activities.splice(i, 1);
+    this.saveTimerState();
     // Update Cookie -
     if (this.activities === undefined || this.activities.length == 0) {
       this.add_placeholder = "Your Task";
     }
+  }
+
+  startSubTimer(i){
+    this.activities.forEach(activity => {
+      if(activity.getState()){
+        activity.pauseTimer();
+        activity.lastState = 0;
+      }
+    })
+    this.activities[i].startTimer();
+    this.saveTimerState();
+  }
+
+  fetchTimerState(): void{
+    // var json_str = this.cookieService.get('main-timers');
+    var json_str = localStorage.getItem('main-timers');
+    let _activities = [];
+    // cookie .length > 0
+    if(json_str){
+      _activities = JSON.parse(json_str);
+      _activities.forEach(_activity => {
+        // Run the initiate code
+        let activity = new ActivityListItem(_activity.id, _activity.colour, _activity.name);
+        activity.fetchData(_activity.lastUpdated, _activity.timeElapsed, _activity.state, _activity.changed, _activity.reset, 
+                           _activity.lastState, _activity.paused, _activity.hours, _activity.minutes, _activity.seconds);
+        this.activities.push(activity);
+
+        this.add_placeholder = "Activities Set!";
+      });
+    }
+  }
+
+  saveTimerState(){
+    if (this.activities === undefined || this.activities.length == 0) {
+      // this.cookieService.delete('main-timers');
+      localStorage.removeItem('main-timers');
+    } else {
+      let expiryDate = new Date();
+      // expiryDate.setDate( expiryDate.getDate() + 1 );
+      // this.cookieService.delete('main-timers');
+      localStorage.removeItem('main-timers');
+      var json_str = JSON.stringify(this.activities);
+      // this.cookieService.set('main-timers', json_str, expiryDate);
+      localStorage.setItem('main-timers', json_str);
+    }
+  }
+
+  clearSubTimers(){
+    localStorage.removeItem('main-timers');
+    this.add_placeholder = "Your Task";
+    // this.cookieService.delete('main-timers');
   }
 }

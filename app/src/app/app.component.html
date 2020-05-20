@@ -55,7 +55,7 @@
                     
                     <div *ngIf="!reset">
                         <strong>{{activity.name}}</strong>&nbsp; - &nbsp;{{activity.hours}} : {{activity.minutes}} : {{activity.seconds}}
-                        <button *ngIf="!activity.getState() && reset_text == 'STOP'" type="button" class="close" (click)="activity.timerToggle();" id="tp_{{i}}">
+                        <button *ngIf="!activity.getState() && reset_text == 'STOP'" type="button" class="close" (click)="startSubTimer(i);" id="tp_{{i}}">
                             <span aria-hidden="true">&#9658;</span>
                         </button>
                         <button *ngIf="activity.getState() && reset_text == 'STOP'" type="button" class="close" (click)="activity.timerToggle();" id="ts_{{i}}">

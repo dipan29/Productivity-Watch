@@ -27,6 +27,24 @@ export class ActivityListItem {
       this.minutes = '00';
       this.seconds = '00';
     }
+
+    public fetchData(_lastUpdated: any, _timeElapsed: any, _state: any, _changed: boolean, _reset: number, _lastState: number,
+                     _paused: any, _hours: any, _minutes: any, _seconds: any): void{
+      this.lastUpdated = _lastUpdated;
+      this.timeElapsed = _timeElapsed;
+      this.state = _state;
+      this.changed = _changed;
+      this.reset = _reset;
+      this.lastState = _lastState;
+      this.paused = _paused;
+      this.hours = _hours;
+      this.seconds = _seconds;
+      this.minutes = _minutes;
+
+      if(_lastState == 1){
+        this.paused = setInterval(() => this.update(), 100);
+      }
+    }
   
     startTimer(): void {
       if (this.paused == null || this.paused <= 0) {
