@@ -25,7 +25,8 @@ export class AppComponent implements  OnInit, OnDestroy {
   state: any = 0;
   changed: boolean = false;
   reset: number = 1;
-  reset_text: string = "STOP"
+  reset_text: string = "STOP";
+  start_text: string = "START";
 
   hours: any = 0;
   minutes: any = 0;
@@ -67,8 +68,9 @@ export class AppComponent implements  OnInit, OnDestroy {
   }
 
   startTimer(): void{
-    if(this.reset_text == "RESET"){
+    if(this.reset_text == "RESET" && this.reset == 0){
       this.resetTimer();
+      this.start_text = "START OVER";
     }
 
     if(this.paused == null || this.paused <= 0){
@@ -84,6 +86,7 @@ export class AppComponent implements  OnInit, OnDestroy {
       this.reset_text = "STOP";
       this.reset = 0;
       this.paused = setInterval(() => this.update(), 100);
+      this.start_text = "START";
     } 
   }
   
@@ -124,6 +127,7 @@ export class AppComponent implements  OnInit, OnDestroy {
       this.hours = this.minutes = this.seconds = "00";
     }
     this.reset_text = "RESET";
+    this.start_text = "START OVER";
     this.changed = false;
     this.setCookies();
     this.cookieService.deleteAll();
@@ -305,6 +309,7 @@ export class AppComponent implements  OnInit, OnDestroy {
   }
 
   startSubTimer(i){
+    this.startTimer();
     this.activities.forEach(activity => {
       if(activity.getState()){
         activity.pauseTimer();
