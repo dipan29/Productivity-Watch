@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stopwatch</title>
+        <style>
+            html,body{
+                margin:0;
+                background-color: rgb(158, 236, 255);
+            }
+            .container{
+                text-align: center;
+            }
+            .title{
+                text-align: center;
+                font-size: 50px;
+            }
+            .box{
+                width:300px;
+                height:200px;
+                margin-left: 50%;
+                transform: translateX(-50%);
+                margin-bottom:20px;
+                margin-top: 20px;
+                align-content: center;
+                border-radius: 30px;
+                box-shadow: 2px 2px 15px 0px rgb(0, 99, 156) ;
+                background-color: whitesmoke;
+            }
+            
+            .img{
+                height:100px;
+                width:100px;
+                border-radius: 50%;
+                border: 1px solid black;
+                margin-left: 14px;
+                position: absolute;
+                top:24px;
+                background-color: white;
+            }
+            .details{
+                padding-top: 24px;
+                margin-left: 130px;
+            }
+            .name{
+                font-size: 20px;
+                font-weight: bold ;
+            }
+            .info{
+                color:rgb(78, 78, 78);
+                margin-top: 5px;
+                font-size: 20px;
+            }
+            .more{
+                text-align: right;
+                margin-top: 5px;
+                margin-right: 10px;
+                color:blueviolet;
+            }
+            .socials{
+                height:50px;
+                width:300px;
+                text-align: center;
+                position: absolute;
+                margin-top:130px;
+            }
+            .fa{
+                height:50px;
+                width:50px;
+                background-color: black;
+                border-radius: 50%;
+                display: inline-block;
+                position: relative;
+            }
+            @media screen and (min-width:800px)
+            {
+                .box{
+                    display: inline-flex;
+                    margin:15px;
+                    transform: translateX(0%);
+                    height:400px;
+                }
+                .more{
+                    display: none;
+                }
+                .socials{
+                    height:50px;
+                    width:300px;
+                    text-align: center;
+                    position: absolute;
+                    margin-top:330px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">The Team</div>
+            <div id="one" class="box one">
+                <div class="img"></div>
+                <div class="socials">
+                    <div class="fa facebook"></div>
+                    <div class="fa instagram"></div>
+                    <div class="fa github"></div>
+                    <div class="fa twitter"></div>
+                    <div class="fa linkedin"></div>
+                </div>
+                <div class="details">
+                    <div class="name">Dipan Roy</div>
+                    <div class="info">Backend Developer</div>
+                    <div id="more1" class="more" onclick="myFunction(1)">Read More</div>
+                </div>
+            </div>
+            <div id="two" class="box two">
+                <div class="img"></div>
+                <div class="socials">
+                    <div class="fa facebook"></div>
+                    <div class="fa instagram"></div>
+                    <div class="fa github"></div>
+                    <div class="fa twitter"></div>
+                    <div class="fa linkedin"></div>
+                </div>
+                <div class="details">
+                    <div class="name">Ayushman Bilas Thakur</div>
+                    <div class="info">Frontend Developer</div>
+                    <div id="more2" class="more" onclick="myFunction(2)">Read More</div>
+                </div>
+            </div>
+            <div id="three" class="box three">
+                <div class="img"></div>
+                <div class="socials">
+                    <div class="fa facebook"></div>
+                    <div class="fa instagram"></div>
+                    <div class="fa github"></div>
+                    <div class="fa twitter"></div>
+                    <div class="fa linkedin"></div>
+                </div>
+                <div class="details">
+                    <div class="name">Aayush Agarwal</div>
+                    <div class="info">UI/UX designer <b></b> Frontend Developer</div>
+                    <div id="more3" class="more" onclick="myFunction(3)">Read More</div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function myFunction(x)
+            {
+                if(x=="1")
+                {
+                    if(document.getElementById("one").style.height=="200px")
+                    {
+                        document.getElementById("one").style.height="400px";
+                        document.getElementById("more1").innerText="Read Less";
+                    }
+                    else
+                    {
+                        document.getElementById("one").style.height="200px";
+                        document.getElementById("more1").innerText="Read More";
+                    }
+                }
+                else if(x=="2")
+                {
+                    if(document.getElementById("two").style.height=="200px")
+                    {
+                        document.getElementById("two").style.height="400px";
+                        document.getElementById("more2").innerText="Read Less";
+                    }
+                    else
+                    {
+                        document.getElementById("two").style.height="200px";
+                        document.getElementById("more2").innerText="Read More";
+                    }
+                }
+                else if(x=="3")
+                {
+                    if(document.getElementById("three").style.height=="200px")
+                    {
+                        document.getElementById("three").style.height="400px";
+                        document.getElementById("more3").innerText="Read Less";
+                    }
+                    else
+                    {
+                        document.getElementById("three").style.height="200px";
+                        document.getElementById("more3").innerText="Read More";
+                    }
+                }
+            }
+        </script>
+    </body>
