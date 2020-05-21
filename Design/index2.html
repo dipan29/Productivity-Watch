@@ -7,7 +7,15 @@
         <style>
             html,body{
                 margin:0;
-                background-color: rgb(158, 236, 255);
+            }
+            canvas{
+                position:absolute;
+                display: block;
+                min-height: 100%;
+                width: 100%;
+                top:0;
+                left:0;
+                z-index:-1;
             }
             .container{
                 text-align: center;
@@ -25,7 +33,7 @@
                 margin-top: 20px;
                 align-content: center;
                 border-radius: 30px;
-                box-shadow: 2px 2px 15px 0px rgb(0, 99, 156) ;
+                box-shadow: 2px 2px 15px 0px rgb(63, 63, 63) ;
                 background-color: whitesmoke;
             }
             
@@ -73,6 +81,12 @@
                 display: inline-block;
                 position: relative;
             }
+            #desc1,#desc2,#desc3{
+                position: absolute;
+                margin-top: 80px;
+                padding: 10px;
+                display: none;
+            }
             @media screen and (min-width:800px)
             {
                 .box{
@@ -91,6 +105,10 @@
                     position: absolute;
                     margin-top:330px;
                 }
+                #desc1,#desc2,#desc3{
+                    display: block;
+                    margin-top: 130px;
+                }
             }
         </style>
     </head>
@@ -99,7 +117,7 @@
             <div class="title">The Team</div>
             <div id="one" class="box one">
                 <div class="img"></div>
-                <div class="socials">
+                <div id="socisl1" class="socials">
                     <div class="fa facebook"></div>
                     <div class="fa instagram"></div>
                     <div class="fa github"></div>
@@ -111,10 +129,11 @@
                     <div class="info">Backend Developer</div>
                     <div id="more1" class="more" onclick="myFunction(1)">Read More</div>
                 </div>
+                <div id="desc1" class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</div>
             </div>
             <div id="two" class="box two">
                 <div class="img"></div>
-                <div class="socials">
+                <div id="social2" class="socials">
                     <div class="fa facebook"></div>
                     <div class="fa instagram"></div>
                     <div class="fa github"></div>
@@ -126,10 +145,11 @@
                     <div class="info">Frontend Developer</div>
                     <div id="more2" class="more" onclick="myFunction(2)">Read More</div>
                 </div>
+                <div id="desc2" class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</div>
             </div>
             <div id="three" class="box three">
                 <div class="img"></div>
-                <div class="socials">
+                <div id="social3" class="socials">
                     <div class="fa facebook"></div>
                     <div class="fa instagram"></div>
                     <div class="fa github"></div>
@@ -141,8 +161,225 @@
                     <div class="info">UI/UX designer <b></b> Frontend Developer</div>
                     <div id="more3" class="more" onclick="myFunction(3)">Read More</div>
                 </div>
+                <div id="desc3" class="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</div>
             </div>
         </div>
+        <canvas id="c"></canvas>
+        
+        <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/animejs/1.0.0/anime.min.js'></script>
+        <script id="rendered-js">
+
+            var c = document.getElementById("c");
+            var ctx = c.getContext("2d");
+            var cH;
+            var cW;
+            var bgColor = "#FF6138";
+            var animations = [];
+            var circles = [];
+
+            var colorPicker = function () {
+            var colors = ["#FF6138", "#FFBE53", "#2980B9", "#282741"];
+            var index = 0;
+            function next() {
+                index = index++ < colors.length - 1 ? index : 0;
+                return colors[index];
+            }
+            function current() {
+                return colors[index];
+            }
+            return {
+                next: next,
+                current: current };
+
+            }();
+
+            function removeAnimation(animation) {
+            var index = animations.indexOf(animation);
+            if (index > -1) animations.splice(index, 1);
+            }
+
+            function calcPageFillRadius(x, y) {
+            var l = Math.max(x - 0, cW - x);
+            var h = Math.max(y - 0, cH - y);
+            return Math.sqrt(Math.pow(l, 2) + Math.pow(h, 2));
+            }
+
+            function addClickListeners() {
+            document.addEventListener("touchstart", handleEvent);
+            document.addEventListener("mousedown", handleEvent);
+            };
+
+            function handleEvent(e) {
+            if (e.touches) {
+                e.preventDefault();
+                e = e.touches[0];
+            }
+            var currentColor = colorPicker.current();
+            var nextColor = colorPicker.next();
+            var targetR = calcPageFillRadius(e.pageX, e.pageY);
+            var rippleSize = Math.min(200, cW * .4);
+            var minCoverDuration = 750;
+
+            var pageFill = new Circle({
+                x: e.pageX,
+                y: e.pageY,
+                r: 0,
+                fill: nextColor });
+
+            var fillAnimation = anime({
+                targets: pageFill,
+                r: targetR,
+                duration: Math.max(targetR / 2, minCoverDuration),
+                easing: "easeOutQuart",
+                complete: function () {
+                bgColor = pageFill.fill;
+                removeAnimation(fillAnimation);
+                } });
+
+
+            var ripple = new Circle({
+                x: e.pageX,
+                y: e.pageY,
+                r: 0,
+                fill: currentColor,
+                stroke: {
+                width: 3,
+                color: currentColor },
+
+                opacity: 1 });
+
+            var rippleAnimation = anime({
+                targets: ripple,
+                r: rippleSize,
+                opacity: 0,
+                easing: "easeOutExpo",
+                duration: 900,
+                complete: removeAnimation });
+
+
+            var particles = [];
+            for (var i = 0; i < 32; i++) {if (window.CP.shouldStopExecution(0)) break;
+                var particle = new Circle({
+                x: e.pageX,
+                y: e.pageY,
+                fill: currentColor,
+                r: anime.random(24, 48) });
+
+                particles.push(particle);
+            }window.CP.exitedLoop(0);
+            var particlesAnimation = anime({
+                targets: particles,
+                x: function (particle) {
+                return particle.x + anime.random(rippleSize, -rippleSize);
+                },
+                y: function (particle) {
+                return particle.y + anime.random(rippleSize * 1.15, -rippleSize * 1.15);
+                },
+                r: 0,
+                easing: "easeOutExpo",
+                duration: anime.random(1000, 1300),
+                complete: removeAnimation });
+
+            animations.push(fillAnimation, rippleAnimation, particlesAnimation);
+            }
+
+            function extend(a, b) {
+            for (var key in b) {
+                if (b.hasOwnProperty(key)) {
+                a[key] = b[key];
+                }
+            }
+            return a;
+            }
+
+            var Circle = function (opts) {
+            extend(this, opts);
+            };
+
+            Circle.prototype.draw = function () {
+            ctx.globalAlpha = this.opacity || 1;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+            if (this.stroke) {
+                ctx.strokeStyle = this.stroke.color;
+                ctx.lineWidth = this.stroke.width;
+                ctx.stroke();
+            }
+            if (this.fill) {
+                ctx.fillStyle = this.fill;
+                ctx.fill();
+            }
+            ctx.closePath();
+            ctx.globalAlpha = 1;
+            };
+
+            var animate = anime({
+            duration: Infinity,
+            update: function () {
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, cW, cH);
+                animations.forEach(function (anim) {
+                anim.animatables.forEach(function (animatable) {
+                    animatable.target.draw();
+                });
+                });
+            } });
+
+
+            var resizeCanvas = function () {
+            cW = window.innerWidth;
+            cH = window.innerHeight;
+            c.width = cW * devicePixelRatio;
+            c.height = cH * devicePixelRatio;
+            ctx.scale(devicePixelRatio, devicePixelRatio);
+            };
+
+            (function init() {
+            resizeCanvas();
+            if (window.CP) {
+                // CodePen's loop detection was causin' problems
+                // and I have no idea why, so...
+                window.CP.PenTimer.MAX_TIME_IN_LOOP_WO_EXIT = 6000;
+            }
+            window.addEventListener("resize", resizeCanvas);
+            addClickListeners();
+            if (!!window.location.pathname.match(/fullcpgrid/)) {
+                startFauxClicking();
+            }
+            handleInactiveUser();
+            })();
+
+            function handleInactiveUser() {
+            var inactive = setTimeout(function () {
+                fauxClick(cW / 2, cH / 2);
+            }, 2000);
+
+            function clearInactiveTimeout() {
+                clearTimeout(inactive);
+                document.removeEventListener("mousedown", clearInactiveTimeout);
+                document.removeEventListener("touchstart", clearInactiveTimeout);
+            }
+
+            document.addEventListener("mousedown", clearInactiveTimeout);
+            document.addEventListener("touchstart", clearInactiveTimeout);
+            }
+
+            function startFauxClicking() {
+            setTimeout(function () {
+                fauxClick(anime.random(cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
+                startFauxClicking();
+            }, anime.random(200, 900));
+            }
+
+            function fauxClick(x, y) {
+            var fauxClick = new Event("mousedown");
+            fauxClick.pageX = x;
+            fauxClick.pageY = y;
+            document.dispatchEvent(fauxClick);
+            }
+        
+    </script>
         <script type="text/javascript">
             function myFunction(x)
             {
@@ -152,11 +389,13 @@
                     {
                         document.getElementById("one").style.height="400px";
                         document.getElementById("more1").innerText="Read Less";
+                        document.getElementById("desc1").style.display="block";
                     }
                     else
                     {
                         document.getElementById("one").style.height="200px";
                         document.getElementById("more1").innerText="Read More";
+                        document.getElementById("desc1").style.display="none";
                     }
                 }
                 else if(x=="2")
@@ -165,11 +404,13 @@
                     {
                         document.getElementById("two").style.height="400px";
                         document.getElementById("more2").innerText="Read Less";
+                        document.getElementById("desc2").style.display="block";
                     }
                     else
                     {
                         document.getElementById("two").style.height="200px";
                         document.getElementById("more2").innerText="Read More";
+                        document.getElementById("desc2").style.display="none";
                     }
                 }
                 else if(x=="3")
@@ -178,11 +419,13 @@
                     {
                         document.getElementById("three").style.height="400px";
                         document.getElementById("more3").innerText="Read Less";
+                        document.getElementById("desc3").style.display="block";
                     }
                     else
                     {
                         document.getElementById("three").style.height="200px";
                         document.getElementById("more3").innerText="Read More";
+                        document.getElementById("desc3").style.display="none";
                     }
                 }
             }
