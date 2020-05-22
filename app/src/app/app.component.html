@@ -1,91 +1,197 @@
-<div class="content">
-    <div class="row pt-2">
-        <div class="col text-center">
-            <div class="main">
-                <span class="hours">{{hours}}</span><span class="minutes">{{minutes}}</span><span class="seconds">{{seconds}}</span>
-            </div>
-        </div>
+<div class="cover">
+  <div id="cir" *ngIf="!state && !paused" class="circle" (click)="startTimer()">
+    <h2 *ngIf="start_text !== 'START OVER'">{{ start_text }}</h2>
+    <h2 class="main" *ngIf="start_text === 'START OVER'">
+      <span class="hours">{{ hours }}</span
+      ><span class="minutes">{{ minutes }}</span
+      ><span class="seconds">{{ seconds }}</span>
+    </h2>
+    <div class="box">
+      <div class="wave -one"></div>
+      <div class="wave -two"></div>
+      <div class="wave -three"></div>
     </div>
-    <div class="button-row pt-2 mb-3 text-center">
-        <!-- <div class="col text-center"> -->            
-            <button *ngIf="paused == 0" mat-raised-button color="primary" (click)="startTimer();">{{start_text}}</button>
-            <button *ngIf="paused == -1" mat-raised-button color="primary" (click)="startTimer();">RESUME</button>
-            <button *ngIf="paused > 0" mat-raised-button color="accent" (click)="pauseTimer();">PAUSE</button>
-            <button *ngIf="state" mat-raised-button (click)="lapTimer();">LAP</button>
-            <button mat-raised-button color="warn" (click)="resetTimer();">{{reset_text}}</button>
-        <!-- </div> -->
+  </div>
+
+  <div class="content">
+    <div class="clock" *ngIf="state || paused">
+      <div class="box">
+        <div class="wave -one"></div>
+        <div class="wave -two"></div>
+        <div class="wave -three"></div>
+      </div>
+      <!-- <div class="col text-center"> -->
+      <div class="main">
+        <span class="hours">{{ hours }}</span
+        ><span class="minutes">{{ minutes }}</span
+        ><span class="seconds">{{ seconds }}</span>
+      </div>
+
+      <div class="arc"></div>
+    </div>
+
+    <div
+      class="button-row pt-2 mb-3 text-center"
+      *ngIf="paused || state || start_text == 'START OVER'"
+    >
+      <!-- <div class="col text-center"> -->
+      <button
+        *ngIf="paused == 0 && start_text !== 'START OVER'"
+        mat-raised-button
+        color="primary"
+        (click)="startTimer()"
+      >
+        {{ start_text }}
+      </button>
+      <button
+        *ngIf="paused == -1"
+        mat-raised-button
+        color="primary"
+        (click)="startTimer()"
+      >
+        RESUME
+      </button>
+      <button
+        *ngIf="paused > 0"
+        mat-raised-button
+        color="accent"
+        (click)="pauseTimer()"
+      >
+        PAUSE
+      </button>
+      <button *ngIf="state" mat-raised-button (click)="lapTimer()">LAP</button>
+      <button mat-raised-button color="warn" (click)="resetTimer()">
+        {{ reset_text }}
+      </button>
+      <!-- </div> -->
     </div>
     <!-- Sub Timers -->
     <div *ngIf="reset" class="row">
-        <div class="col text-center">
-            <h4 class="text-capitalize">What are you planning to do Today?</h4>
-        </div>
+      <div class="col text-center">
+        <h4 class="text-capitalize">What are you planning to do Today?</h4>
+      </div>
     </div>
     <!-- List of Current Tags -->
 
     <div *ngIf="reset" class="row">
-        <div class="col">
-            <div class="input-group mb-3">
-                <input #textbox type="text" class="form-control" placeholder="{{add_placeholder}}" [(ngModel)]="tag_name" required aria-describedby="tag-add">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-success" type="button" id="tag-add" (click)="addTag();">ADD</button>
-                </div>
-              </div>
+      <div class="col">
+        <div class="input-group mb-3">
+          <input
+            #textbox
+            type="text"
+            class="form-control"
+            placeholder="{{ add_placeholder }}"
+            [(ngModel)]="tag_name"
+            required
+            aria-describedby="tag-add"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-success"
+              type="button"
+              id="tag-add"
+              (click)="addTag()"
+            >
+              ADD
+            </button>
+          </div>
         </div>
-    </div>  
+      </div>
+    </div>
 
     <div *ngIf="!reset && activities.length > 0" class="row mt-3">
-        <div class="col text-center">
-            <h4>My Tasks</h4>
-        </div>
+      <div class="col text-center">
+        <h4>My Tasks</h4>
+      </div>
     </div>
 
     <div class="row-tags row-scroll" *ngIf="add_placeholder != 'Your Task'">
-        <div *ngFor="let activity of activities; let i = index" class="row" id="t_{{i}}">
-            <div class="col">
-                <div class="alert alert-dismissible fade show" style="background-color: {{activity.colour}}" role="alert">
-                    <div *ngIf="reset">
-                        <strong>{{activity.name}}</strong>
-                        <div *ngIf="reset" >
-                            <button type="button" class="close" (click)="deleteTag(i)" data-dismiss="alert" aria-label="Close" id="tx_{{i}}">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div *ngIf="!reset">
-                        <strong>{{activity.name}}</strong>&nbsp; - &nbsp;{{activity.hours}} : {{activity.minutes}} : {{activity.seconds}}
-                        <button *ngIf="!activity.getState() && reset_text == 'STOP'" type="button" class="close" (click)="startSubTimer(i);" id="tp_{{i}}">
-                            <span aria-hidden="true">&#9658;</span>
-                        </button>
-                        <button *ngIf="activity.getState() && reset_text == 'STOP'" type="button" class="close" (click)="activity.timerToggle();" id="ts_{{i}}">
-                            <span aria-hidden="true">&#9616;&#9616;</span>
-                        </button>
-                    </div>
-                </div>
+      <div
+        *ngFor="let activity of activities; let i = index"
+        class="row"
+        id="t_{{ i }}"
+      >
+        <div class="col">
+          <div
+            class="alert alert-dismissible fade show"
+            style="background-color: {{ activity.colour }}"
+            role="alert"
+          >
+            <div *ngIf="reset">
+              <strong>{{ activity.name }}</strong>
+              <div *ngIf="reset">
+                <button
+                  type="button"
+                  class="close"
+                  (click)="deleteTag(i)"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                  id="tx_{{ i }}"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
             </div>
+
+            <div *ngIf="!reset">
+              <strong>{{ activity.name }}</strong
+              >&nbsp; - &nbsp;{{ activity.hours }} : {{ activity.minutes }} :
+              {{ activity.seconds }}
+              <button
+                *ngIf="!activity.getState() && reset_text == 'STOP'"
+                type="button"
+                class="close"
+                (click)="startSubTimer(i)"
+                id="tp_{{ i }}"
+              >
+                <span aria-hidden="true">&#9658;</span>
+              </button>
+              <button
+                *ngIf="activity.getState() && reset_text == 'STOP'"
+                type="button"
+                class="close"
+                (click)="activity.timerToggle()"
+                id="ts_{{ i }}"
+              >
+                <span aria-hidden="true">&#9616;&#9616;</span>
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Laps Div -->
     <div *ngIf="!reset && laps.length > 0" class="row mt-3">
-        <div class="col text-center">
-            <h4>LAPS</h4>
-        </div>
+      <div class="col text-center">
+        <h4>LAPS</h4>
+      </div>
     </div>
 
     <div class="row-scroll">
-        <div *ngFor="let lap of laps; let i = index" class="row" id="l_{{i}}">
-            <div class="col">
-                <div class="alert alert-light alert-dismissible fade show" role="alert">                    
-                    <strong (click)="nameLap(i);">{{lap.name}}</strong><span *ngIf="lap.tag.length > 0 " (click)="nameLap(i);"> - {{lap.tag}}</span>
-                    <button type="button" class="close" (click)="closeLap(i)" data-dismiss="alert" aria-label="Close" id="lx_{{i}}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
+      <div *ngFor="let lap of laps; let i = index" class="row" id="l_{{ i }}">
+        <div class="col">
+          <div
+            class="alert alert-light alert-dismissible fade show"
+            role="alert"
+          >
+            <strong (click)="nameLap(i)">{{ lap.name }}</strong
+            ><span *ngIf="lap.tag.length > 0" (click)="nameLap(i)">
+              - {{ lap.tag }}</span
+            >
+            <button
+              type="button"
+              class="close"
+              (click)="closeLap(i)"
+              data-dismiss="alert"
+              aria-label="Close"
+              id="lx_{{ i }}"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-    
-
+  </div>
 </div>

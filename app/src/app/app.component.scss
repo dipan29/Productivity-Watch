@@ -1,33 +1,140 @@
-.content{
+.content {
   max-width: 480px;
   width: 90%;
-  margin:0 auto;
+  margin: 0 auto;
   z-index: 5;
-  padding: 10px;
 }
 
-h1, h2, h3 {
-  font-family: 'Comfortaa', cursive;
+.circle,
+.clock {
+  box-sizing: border-box;
+  height: 300px;
+  width: 300px;
+  margin: 30px auto;
+  border: 10px solid white;
+  border-radius: 50%;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  font-size: 40px;
+  cursor: pointer;
+  position: relative;
+}
+
+h2 {
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+}
+
+.box {
+  width: 285px;
+  height: 285px;
+  border-radius: 50%;
+  box-shadow: 0 2px 30px rgba(black, 0.2);
+  background: lighten(#f0f4c3, 10%);
+  position: absolute;
+  overflow: hidden;
+  z-index: 0;
+  transform: translate3d(0, 0, 0) scaleY(-1);
+}
+
+.wave {
+  opacity: 0.4;
+  position: absolute;
+  bottom: 30%;
+  left: 50%;
+  background-image: linear-gradient(
+    to top,
+    rgb(134, 177, 255) 0%,
+    rgb(110, 8, 194) 100%
+  );
+  width: 900px;
+  height: 900px;
+  margin-left: -450px;
+  margin-top: -450px;
+  transform-origin: 50% 48%;
+  border-radius: 43%;
+  animation: drift 5s infinite linear;
+}
+
+.wave.-three {
+  animation: drift 9s infinite linear;
+}
+
+.wave.-two {
+  animation: drift 12s infinite linear;
+  opacity: 0.1;
+  background: rgb(130, 0, 190);
+}
+
+@keyframes drift {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.arc {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 10px solid blueviolet;
+  clip-path: polygon(50% 50%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%);
+  transform: rotateZ(45deg);
+  animation: circlearc 60s infinite linear forwards;
+}
+@keyframes circlearc {
+  25% {
+    clip-path: polygon(50% 50%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0% 0%);
+  }
+  50% {
+    clip-path: polygon(
+      50% 50%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 0%,
+      0% 0%
+    );
+  }
+  75% {
+    clip-path: polygon(50% 50%, 0% 100%, 0% 100%, 100% 100%, 100% 0%, 0% 0%);
+  }
+  100% {
+    clip-path: polygon(50% 50%, 0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%);
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Comfortaa", cursive;
   font-weight: 900;
 }
 
 h4 {
-  font-family:  'Comfortaa', cursive;
+  font-family: "Comfortaa", cursive;
   font-weight: 900;
   font-size: 24px;
 }
 
 h5 {
-  font-family:  'Comfortaa', cursive;
+  font-family: "Comfortaa", cursive;
   font-weight: 900;
   font-size: 18px;
 }
 
 .tags {
-  font-family: 'Satisfy', cursive;
+  font-family: "Satisfy", cursive;
 }
 
-.text-center{
+.text-center {
   text-align: center;
   align-items: center;
 }
@@ -40,23 +147,23 @@ h5 {
   text-transform: uppercase;
 }
 
-.row-tags{
+.row-tags {
   // font-size: 12px;
-  font-family: 'Comfortaa', cursive;
+  font-family: "Comfortaa", cursive;
 }
 
-.row-tags .alert{
-  color: white; 
+.row-tags .alert {
+  color: white;
 }
 
-.row-scroll{
+.row-scroll {
   max-height: 235px !important;
   overflow-x: hidden;
   overflow-y: scroll;
 }
 
-@media only screen and (min-width: 600px){
-  .row-scroll{
+@media only screen and (min-width: 600px) {
+  .row-scroll {
     padding-right: 10px;
   }
 
@@ -67,17 +174,17 @@ h5 {
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #f1f1f1;
   }
-  
+
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: #888;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: #555;
   }
 }
 
@@ -100,19 +207,19 @@ h5 {
   margin-bottom: 50px;
 }
 
-.pt-5{
+.pt-5 {
   padding-top: 50px;
 }
 
-.pt-3{
+.pt-3 {
   padding-top: 30px;
 }
 
-.mt-5{
+.mt-5 {
   margin-top: 50px;
 }
 
-.mt-3{
+.mt-3 {
   margin-top: 30px !important;
 }
 
@@ -120,16 +227,17 @@ h5 {
   margin-bottom: 30px !important;
 }
 
-.py-5{
+.py-5 {
   padding-top: 50px;
   padding-bottom: 50px;
 }
 
 .main {
   font-size: 50px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   text-align: center;
   // margin-top: 10px;
+  z-index: 5;
   padding-top: 30px;
   padding-bottom: 30px;
 }
@@ -148,4 +256,3 @@ h5 {
   padding-bottom: 5px;
   font-size: 20px;
 }
-
