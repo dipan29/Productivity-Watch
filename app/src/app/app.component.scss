@@ -26,7 +26,7 @@ h2 {
   z-index: 2;
   margin: 0;
   padding: 0;
-  font-size: 2rem;
+  font-size: 2.5rem;
 }
 
 .box {
@@ -57,15 +57,15 @@ h2 {
   margin-top: -450px;
   transform-origin: 50% 48%;
   border-radius: 43%;
-  animation: drift 5s infinite linear;
+  animation: drift 10s infinite linear;
 }
 
 .wave.-three {
-  animation: drift 9s infinite linear;
+  animation: drift 16s infinite linear;
 }
 
 .wave.-two {
-  animation: drift 12s infinite linear;
+  animation: drift 25s infinite linear;
   opacity: 0.1;
   background: rgb(130, 0, 190);
 }

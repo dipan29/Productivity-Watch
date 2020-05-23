@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { generate } from 'shortid';
 import { ActivityListItem } from './activity-list-item';
 // import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+// import { DOCUMENT } from '@angular/common'; 
 
 @Component({
   selector: 'app-root',
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
   reset: number = 1;
   reset_text: string = 'STOP';
   start_text: string = 'START';
+  arc_style: string = "animation-play-state: paused;";
 
   hours: any = 0;
   minutes: any = 0;
@@ -83,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.reset_text == 'RESET' && this.reset == 0) {
       this.resetTimer();
       this.start_text = 'START OVER';
+      this.arc_style = "animation-play-state: paused;";
     }
 
     if (this.paused == null || this.paused <= 0) {
@@ -97,6 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.reset_text = 'STOP';
       this.reset = 0;
       this.paused = setInterval(() => this.update(), 100);
+      this.arc_style = '';
       this.start_text = 'START';
     }
   }
@@ -112,12 +116,14 @@ export class AppComponent implements OnInit, OnDestroy {
       this.state = 0;
       this.setCookies();
       // set stop cookie = 1;
+      this.arc_style = "animation-play-state: paused;";
     } else {
       this.lastUpdated = new Date().getTime();
       this.state = 1;
       this.paused = setInterval(() => this.update(), 100);
       // Change the cookie & set stop = 0
       this.setCookies();
+      this.arc_style = '';
     }
   }
 
