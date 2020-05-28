@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>My Timer</title>
@@ -9,7 +10,37 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body class="mat-typography">
+
+<body class="mat-typography" onload="getSaavn();">
   <app-root></app-root>
+
+  <!--jiosaavn[S]-->
+  <div id="jiosaavn-widget">
+    <div style="position: absolute;top: 100%; display: none;">
+      <!--
+      Listen to the <a
+        href="https://www.jiosaavn.com/featured/the-drop/NkWn3dHw0Krc1EngHtQQ2g__" target="_blank">latest songs</a>,
+      only on <a href="https://www.jiosaavn.com" target="_blank">JioSaavn.com</a>
+      -->
+    </div>
+  </div>
+  <script>
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+    (function getSaavn(d, t) {
+      // Enter Playlist Numbers Here
+      var playlist = ['https://www.jiosaavn.com/embed/playlist/49', 
+                      'https://www.jiosaavn.com/embed/playlist/173255392', 
+                      'https://www.jiosaavn.com/embed/playlist/85481065'];
+      var index = getRandomInt(playlist.length);
+
+      var s = d.createElement(t); var s1 = d.createElement(t);
+      if (d.getElementById('jsw-init')) return; s.setAttribute('id', 'jsw-init'); s.setAttribute('src', 'https://www.jiosaavn.com/embed/_s/embed.js?ver=' + Date.now()); s.onload = function () { s1.appendChild(d.createTextNode('JioSaavnEmbedWidget.init({a:1,q:1,embed_src:"' + playlist[index] + '", partner_id: "mindwebs"});')); d.body.appendChild(s1); };
+      if (document.readyState === 'complete') { d.body.appendChild(s); } else if (document.readyState === 'loading') { var interval = setInterval(function () { if (document.readyState === 'complete') { d.body.appendChild(s); clearInterval(interval); } }, 100); } else { window.onload = function () { d.body.appendChild(s); }; }
+    })(document, 'script');
+  </script>
+  <!--jiosaavn[E]-->
 </body>
+
 </html>
