@@ -4,6 +4,9 @@ import { generate } from 'shortid';
 import { ActivityListItem } from './activity-list-item';
 // import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { DOCUMENT } from '@angular/common'; 
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-root',
@@ -11,7 +14,10 @@ import { ActivityListItem } from './activity-list-item';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'My Timer';
+  title = 'TapTimer';
+
+  public ver: string = '1.0.5';
+  public showModal: number = 1;
 
   myColours: string[] = [
     '#1abc9c',
@@ -57,9 +63,25 @@ export class AppComponent implements OnInit, OnDestroy {
   tags: any = [];
   activities: ActivityListItem[] = [];
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CookieService,
+              private modalService: NgbModal,
+              private titleService: Title ) {}
 
   public ngOnInit(): void {
+    // this.modalService.open('', { centered: true, ariaLabelledBy: 'modal-basic-title'});
+    let getVer: string = this.cookieService.get('version');
+    if(getVer != null && getVer.length > 2){
+      if(this.ver == getVer){
+        this.showModal = 0;
+      } else {
+        this.showModal = 2;
+      }
+    } else {
+      this.showModal = 1;
+    }
+    // Set Modal Opening here
+
+    this.titleService.setTitle( this.title + " - A Productivity Stopwatch");
     this.cookieCheck();
 
     this.initiate(this.hours, this.minutes, this.seconds);
@@ -117,6 +139,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.setCookies();
       // set stop cookie = 1;
       this.arc_style = "animation-play-state: paused;";
+      this.titleService.setTitle( this.title + " - Paused" );
     } else {
       this.lastUpdated = new Date().getTime();
       this.state = 1;
@@ -152,6 +175,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.changed = false;
     this.setCookies();
     this.cookieService.deleteAll();
+    if(!this.showModal){
+      let expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 180);
+      this.cookieService.set('version', this.ver, expiryDate);
+    }
+    this.titleService.setTitle( this.title );
   }
 
   lapTimer() {
@@ -222,6 +251,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.lastUpdated = now;
     this.setCookies();
     this.saveTimerState();
+    this.titleService.setTitle( this.title + " - " + this.hours + ":" + this.minutes + ":" + this.seconds );
   }
 
   initiate(h, m, n) {
@@ -398,5 +428,16 @@ export class AppComponent implements OnInit, OnDestroy {
     localStorage.removeItem('main-timers');
     this.add_placeholder = 'Your Task';
     // this.cookieService.delete('main-timers');
+  }
+
+  closeDialog(){
+    let expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 180);
+    this.cookieService.set('version', this.ver, expiryDate);
+    this.showModal = 0;
+  }
+
+  closeModal(){
+    this.showModal = 0;
   }
 }

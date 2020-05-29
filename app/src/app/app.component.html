@@ -195,3 +195,62 @@
     </div>
   </div>
 </div>
+
+<!-- Details Modal -->
+<div class="modal" [style.display]="showModal ? 'block' : 'none'" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom: 5px !important;">
+        <h5 class="modal-title" id="myModalLongTitle">{{ title }} - A Productivity Stopwatch</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click) = "closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-justify" style="max-height: 360px; overflow-y: scroll;">
+        <div *ngIf = "showModal != 2">
+        <p>This application allows you to precisely track your work schedule based on various tasks that you are willing to perform. Before you are starting the timer, add your taks that you are willing to complete in the period for example Coding, Assignments, etc.</p>
+        <p>Once you are done setting up your tasks, start the stop-watch. You can individually start sub-task timers such that you can actively track how much time you have spent on something.</p>
+        <br />
+        <h5>Features : -</h5>
+        <ul>
+          <li>Allowes Multiple Sub-Task Timers and can individually control them</li>
+          <li>Stays in Memory so that you can even continue work after restarting your device.</li>
+          <li>Add as many laps you want and Tap on them to set a name of the Lap for easy understanding.</li>
+        </ul>
+        <br/>
+        <h5>We are Working on : -</h5>
+        <p>With the next update, you will be presented with post timer analysis of what activities you have performed and how to increase your productivity by looking at the analytics.<br />
+          Android Application coming soon!</p>
+
+        <br/>
+        <h5>The Team Behind {{ title }} : -</h5>
+        <div class="row text-center">
+          <div class="col-4">
+            <a href="https://github.com/Dipan29">Dipan R.</a>
+          </div>
+          <div class="col-4">
+            <a href="https://github.com/AyushmanBilasThakur">Ayushman B. T.</a>
+          </div>
+          <div class="col-4">
+            <a href="https://github.com/KylixMedusa">Aayush A.</a>
+          </div>
+        </div>
+        <br />
+        </div>
+        <h5>What's new in Version {{ ver }} : -</h5>
+        <ul>
+          <li>Added JioSaavn Playlists. Beta Phase, Playlists are being added!</li>
+          <li>Bugs Fixed related to Beta Testing</li>
+        </ul>
+        
+        <br />
+        <p class="text-center">Powered by <a href="https://mindwebs.org">MinD Webs</a> Team</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal" (click) = "closeDialog()">Don't Show Again!</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click) = "closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
