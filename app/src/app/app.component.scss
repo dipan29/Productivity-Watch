@@ -256,3 +256,16 @@ h5 {
   padding-bottom: 5px;
   font-size: 20px;
 }
+
+@media (max-width: 500px){
+  .circle,
+  .clock,
+  .arc{
+    width: 250px;
+    height: 250px;
+  }
+  .box{
+    width: 235px;
+    height: 235px;
+  }
+}

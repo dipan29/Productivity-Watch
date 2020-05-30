@@ -3,9 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Poppins&family=Satisfy&display=swap');
 
 
-html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 body {
+    //just to make our content to avoid the josaavan control getting into the way of our laps and stuff!!!
+    padding-bottom: 100px;
     background: rgb(181,202,227);
     background: -moz-linear-gradient(340deg, rgba(181,202,227,1) 0%, rgba(255,255,255,1) 100%);
     background: -webkit-linear-gradient(340deg, rgba(181,202,227,1) 0%, rgba(255,255,255,1) 100%);
@@ -14,6 +15,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
+
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
