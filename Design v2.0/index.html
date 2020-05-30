@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stopwatch</title>
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Montserrat:wght@100;200;400&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            html,body{
+                margin:0;
+                background-color: #cfced6;
+                transition: all 0.3s ease-in-out;
+            }
+            /*Container1 for the first page*/
+                .container{
+                }
+                .circle{
+                    height:300px;
+                    width:300px;
+                    border-radius: 50%;
+                    background-image: linear-gradient(145deg,#f7f7f7, #cacbd8);
+                    box-shadow: 12px 12px 24px #b5b6c4 , -12px -12px 24px #ffffff;
+                    position: absolute;
+                    top:25%;
+                    left:50%;
+                    transform: translate(-50%,-50%);
+                    display:flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    transition:all 0.3s ease-in-out;
+                }
+                .circle:hover{
+                    color:#00Ab66;
+                }
+                .circle:focus{
+                    background-color: #cfced6;
+                    box-shadow: inset 12px 12px 24px #b5b6c4, inset -12px -12px 24px #ffffff;
+                    outline: 0;
+                    color:#00Ab66;
+                    text-shadow: 0 0 20px #00ab66;
+                }
+                .circle span{
+                    font-size:50px;
+                    font-family:'Montserrat',sans-serif;
+                    letter-spacing: 5px;
+                }
+                .tags{
+                    position: absolute;
+                    top:50%;
+                    left:50%;
+                    height:50vh;
+                    width:80vw;
+                    transform: translateX(-50%);
+                }
+                .tags column:nth-child(1) h2{
+                    font-family:'Montserrat', sans-serif;
+                    font-weight: 200;
+                    text-align: center;
+                }
+                .tags column:nth-child(2){
+                    display:flex;
+                    align-items: center;
+                }
+                .tags column:nth-child(2) input{
+                    outline: 0;
+                    width:100%;
+                    height:50px;
+                    border: none;
+                    border-radius: 25px;
+                    padding: 0px 15px 0px 15px;
+                    background-color: #cfced6;
+                    box-shadow: inset 10px 10px 25px #b5b6c4, inset -10px -10px 25px #ffffff;
+                }
+                .tags column:nth-child(2) input::placeholder{
+                    opacity: 0.4;
+                }
+                .tags column:nth-child(2) button{
+                    height:30px;
+                    width:80px;
+                    background-color: #ffffff;
+                    margin-left: 20px;
+                    border-radius: 50px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 30px;
+                    border: none;
+                    background-image: linear-gradient(145deg,#ffffff ,#cacbd8);
+                    box-shadow: 6px 6px 15px #b5b6c4 , -6px -6px 15px #ffffff;
+                    color:rgb(80, 80, 80);
+                    transition: all 0.3s ease-in-out;
+                }
+                .tags column:nth-child(2) button:hover{
+                    color:rgb(0, 153, 255);
+                }
+                .tags column:nth-child(2) button:focus{
+                    background-color: #cfced6;
+                    box-shadow: inset 6px 6px 20px #b5b6c4, inset -6px -6px 20px #ffffff;
+                    outline: 0;
+                    color:rgb(0, 153, 255);
+                    text-shadow: 0 0 10px rgb(0, 153, 255);
+                }
+                .wrapper{
+                    margin-top: 30px;
+                    width:80vw;
+                    display: block;
+                    max-height:300px;
+                    overflow-x: hidden;
+                    overflow-y: auto;  
+                    transition: all 300ms ease-in-out;  
+                }
+                .tag{
+                    height:30px;
+                    width:80%;
+                    margin: 20px;
+                    border-radius: 30px;
+                    opacity: 0.6;
+                    background-color: #cacbd8;
+                    box-shadow: 2px 2px 10px #a2a3ad , -2px -2px 10px #ffffff;
+                    justify-content: space-around;
+                    display: flex;
+                    align-items: center;
+                    padding: 0px 15px 0px 15px;
+                    transition: all 150ms ease-in-out;
+                }
+                .tag p{
+                    font-family: 'Montserrat',sans-serif;
+                    width:80%;
+                    overflow: auto;
+                }
+                .tag button{
+                    height:20px;
+                    width:10%;
+                    background-image: linear-gradient(145deg,#e9e9e9 ,#cacbd8);
+                    box-shadow: 2px 2px 10px #91929c , -2px -2px 10px #ffffff;
+                    border: none;
+                    border-radius: 20px;
+                    outline: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .tag button:focus{
+                    background-color: #cfced6;
+                    box-shadow: inset 4px 4px 10px #b5b6c4, inset -4px -4px 10px #ffffff;
+                }
+                .tag button p{
+                    font-size: 20px;
+                    margin: 0;
+                    transform: rotate(45deg);
+                    font-weight: bolder;
+                }
+                .tag button:hover p{
+                    color:red;
+                }
+                .tag button:focus p{
+                    color:red;
+                    text-shadow: 0 0 15px rgb(255, 0, 0);
+                }
+                /*@media screen and (max-height:599px) ,(max-width: 350px){
+                    .circle{
+                        height:200px;
+                        width:200px;
+                    }
+                    .circle span{
+                        font-size: 30px;
+                    }
+                }*/
+                @media screen and (orientation: landscape ){
+                    .circle{
+                        top:50%;
+                        left:25%;
+                    }
+                    .tags{
+                        height:100%;
+                        width:40vw;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        left:75%;
+                        transform: translate(-50%,-50%);
+                    }
+                    .wrapper{
+                        width:40vw;
+                    }
+                }
+            /*End of container1*/
+            /*Start of Container2*/
+                .container2{
+                    display: none;
+                }
+                .clock--container{
+                    margin-top: 50px;
+                    margin-left: 50vw;
+                    transform: translateX(-150px);
+                }
+                .clock--circle{
+                    height:300px;
+                    width:300px;
+                    border-radius: 50%;
+                    background-image: linear-gradient(145deg,#f7f7f7, #cacbd8);
+                    box-shadow: 12px 12px 24px #b5b6c4 , -12px -12px 24px #ffffff;
+                    display:block;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    transition:all 0.3s ease-in-out;
+                }
+                .clock--outercircle{
+                    position: absolute;
+                    top:10px;
+                    left:10px;
+                    height:280px;
+                    width:280px;
+                    border-radius: 50%;
+                    background-image: linear-gradient(145deg,#f7f7f7, #cacbd8);
+                    box-shadow: inset 4px 4px 10px #b5b6c4, inset -4px -4px 10px #ffffff;
+                    display:flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                }
+                .clock--midcircle{
+                    position: absolute;
+                    top:10px;
+                    left:10px;
+                    height:280px;
+                    width:280px;
+                    border-radius: 50%;
+                    background-color: red;
+                    display:flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    transform: rotate(45deg);
+                    clip-path:polygon(50% 50%,0% 0% ,0% 0%,0% 0%,0% 0%,0% 0%);
+                    animation: clock 60s linear infinite;
+                }
+                @keyframes clock{
+                        25%{
+                            clip-path:polygon(50% 50%,100% 0% ,100% 0%,100% 0%,100% 0%,0% 0%);
+                        }
+                        50%{
+                            clip-path:polygon(50% 50%,100% 100% ,100% 100%,100% 100%,100% 0%,0% 0%);
+                        }
+                        75%{
+                            clip-path:polygon(50% 50%,0% 100% ,0% 100%,100% 100%,100% 0%,0% 0%);
+                        }
+                        100%{
+                            clip-path:polygon(50% 50%,0% 0% ,0% 100%,100% 100%,100% 0%,0% 0%);
+
+                        }
+                }
+
+                .clock--innercircle{
+                    position: absolute;
+                    top:30px;
+                    left:30px;
+                    height:240px;
+                    width:240px;
+                    border-radius: 50%;
+                    background-image: linear-gradient(145deg,#f1f1f1, #bcbdca);
+                    box-shadow: 12px 12px 24px #a9aab88c , -12px -12px 24px #ffffff7c;
+                    display:flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                }
+                .button--holder{
+                    width:280px;
+                    margin-top: 20px;
+                    padding:10px;
+                    display: flex;
+                    justify-content: space-evenly;
+                    background-color: #d6d6dd;
+                    box-shadow: 2px 2px 10px #a2a3ad , -2px -2px 10px #ffffff;
+                    border-radius: 10px;
+                    transition: all 0.3s ease-in-out;
+                }
+                .btn{
+                    height:50px;
+                    width:50px;
+                    border-radius: 20px;
+                    border: none;
+                    outline:0;
+                    background-image: linear-gradient(145deg,#e9e9e9 ,#cacbd8);
+                    box-shadow: 2px 2px 10px #91929c , -2px -2px 10px #ffffff;
+                }
+                .pause:focus, .stop:focus,.reset:focus{
+                    background-color: #cfced6;
+                    box-shadow: inset 4px 4px 10px #b5b6c4, inset -4px -4px 10px #ffffff;
+                }
+                .fa{
+                    font-size: 1.2rem;
+                    color:rgb(65, 65, 65);
+                }
+                .pause:hover .fa-pause{
+                    color:rgb(255, 255, 111);
+                }
+                .pause:focus .fa-pause{
+                    color:rgb(255, 255, 111);
+                    filter:drop-shadow(0 0 15px rgb(255, 255, 111));
+                }
+                .stop:hover .fa-stop{
+                    color:red;
+                }
+                .stop:focus .fa-stop{
+                    color:red;
+                    filter:drop-shadow(0 0 15px red);
+                }
+                .reset:hover .fa-refresh{
+                    color:blue;
+                }
+                .reset:focus .fa-refresh{
+                    color:blue;
+                    filter:drop-shadow(0 0 15px blue);
+                }
+                .clock--display{
+                    height:80px;
+                    width:200px;
+                    background-color: #C8CAAF;
+                    box-shadow: inset 0px 0px 8px rgb(109, 110, 95);
+                    border: 3px solid #d6d6dd;
+                    border-radius: 20px;
+                    display: grid;
+                    grid-template-rows: repeat(1,80px);
+                    grid-template-columns:40px 40px 10px 40px 40px;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 50px;
+                    color:rgb(114, 116, 101);
+                    font-family: 'Orbitron', sans-serif;
+                }
+                .clock--display p{
+                    text-align: center;
+                    grid-column: span 1;
+                }
+        </style>
+    </head>
+    <body>
+        <div id="contain" class="container">
+            <button class="circle" onclick="startchange()"><span>Start</span></button>
+            <div  class="tags">
+                <row>
+                    <column><h2>So, What you have planned for the day??</h2></column>
+                    <column><input id="input" type="text" placeholder="Enter task"/><button onclick="addTask()">+</button></column>
+                    <column>
+                        <div id="wrap" class="wrapper">
+                        </div>
+                    </column>
+                </row>
+            </div>
+        </div>
+        <div id="contain2" class="container2">
+            <div class="clock--container">
+                <div class="clock--circle">
+                    <div class="clock--outercircle"></div>
+                    <div class="clock--midcircle"></div>
+                    <div class="clock--innercircle">
+                        <div class="clock--display"><p>0</p><p>0</p><p>:</p><p>0</p><p>0</p></div>
+                    </div>
+                </div>
+                <div class="button--holder">
+                    <button class="btn pause"><i class="fa fa-pause"></i></button>
+                    <button class="btn stop"><i class="fa fa-stop"></i></button>
+                    <button class="btn reset"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+            
+        </div>
+        
+    <script type="text/javascript">
+            var k=1;
+            function myFunctionAdd(){
+                var data=document.getElementById("inputt").value;
+                if(data)
+                {
+                var one=String(k);
+                var two = String(k)+"x";
+                document.getElementById(one).style.display="inline-block";
+                document.getElementById(one).innerText=data;
+                document.getElementById(two).style.display="inline-block";
+                var data=document.getElementById("inputt").value="";
+                k=k+1;
+                }
+            }
+            function myFunctionRemove(x)
+                {
+                    var one=String(x);
+                    var two = String(x)+"x";
+                    document.getElementById(one).style.display="none";
+                    document.getElementById(one).innerText="";
+                    document.getElementById(two).style.display="none";
+                }
+            function startcpage(){
+                document.getElementById("cir").style.display="none";
+                document.getElementById("start2id").style.display="block";
+                document.getElementById("contain").style.display="none";
+            }
+    </script>
+    <script type="text/javascript">
+        var c=0;
+        function addTask(){
+            var text=document.getElementById("input").value;
+            if(text){
+                var node=document.createElement("div")
+                c=c+1;
+                var p=document.createElement("p");
+                var button=document.createElement("button");
+                node.setAttribute('class','tag');
+                node.setAttribute("id",String(c));
+                p.innerText=String(text);
+                var p_cross = document.createElement("p");
+                p_cross.innerText="+";
+                button.appendChild(p_cross);
+                node.appendChild(p);
+                node.appendChild(button);
+                button.setAttribute("onclick","deleteTask("+String(c)+")");
+                document.getElementById("input").value=null;
+                document.getElementById("wrap").appendChild(node);
+            }
+        }
+        function deleteTask(x)
+        {
+            document.getElementById(String(x)).remove();
+        }
+        function startchange(){
+            document.getElementById("contain").style.display="none";
+            document.getElementById("contain2").style.display="block";
+        }
+        /*function initializearc(){
+                var k=20;
+                    if(k>=1 && k<=15)
+                    {
+                        var z= (100/15)*k;
+                        var s="polygon(50% 50%,"+String(z)+"% 0% ,"+String(z)+"% 0%,"+String(z)+"% 0%,"+String(z)+"% 0%,0% 0%)";
+                        document.getElementById("arcc").style.clipPath=s;
+                    }
+                    else if(k>15 && k<=30)
+                    {
+                        var z= (100/15)*(k-15);
+                        var s="polygon(50% 50%,100% "+String(z)+"% ,100% "+String(z)+"%,100% "+String(z)+"%,100% 0%,0% 0%)";
+                        document.getElementById("arcc").style.clipPath=s;
+                    }
+                    else if(k>30 && k<=45)
+                    {
+                        var z= ((100/15)*(k-30));
+                        var r=100-z;
+                        var s="polygon(50% 50%,"+String(r)+"% 100% ,"+String(r)+"% 100%,100% 100%,100% 0%,0% 0%)";
+                        document.getElementById("arcc").style.clipPath=s;
+                    }
+                    else if( k>45 && k<=60)
+                    {
+                        var z= ((100/15)*(k-45));
+                        var r=100-z;
+                        var s="polygon(50% 50%,0% "+String(r)+"% ,0% 100%,100% 100%,100% 0%,0% 0%)";
+                        document.getElementById("arcc").style.clipPath=s;
+                    }
+            }
+            initializearc();*/
+    </script>
+    </body>
+</html>
