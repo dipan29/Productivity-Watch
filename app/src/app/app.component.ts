@@ -6,6 +6,7 @@ import { ActivityListItem } from './activity-list-item';
 // import { DOCUMENT } from '@angular/common'; 
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -49,11 +50,13 @@ export class AppComponent implements OnInit, OnDestroy {
   reset: number = 1;
   reset_text: string = 'STOP';
   start_text: string = 'START';
-  arc_style: string = "animation-play-state: paused;";
+  arc_style: string = "paused";
 
   hours: any = 0;
   minutes: any = 0;
   seconds: any = 0;
+
+  arc_style_2: string = "";
 
   laps: any = [];
   // lap_name: any = '';
@@ -65,9 +68,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(private cookieService: CookieService,
               private modalService: NgbModal,
-              private titleService: Title ) {}
+              private titleService: Title,
+              private sanitizer: DomSanitizer ) {}
 
   public ngOnInit(): void {
+
     // this.modalService.open('', { centered: true, ariaLabelledBy: 'modal-basic-title'});
     let getVer: string = this.cookieService.get('version');
     if(getVer != null && getVer.length > 2){
@@ -103,11 +108,15 @@ export class AppComponent implements OnInit, OnDestroy {
     // this.saveTimerState();
   }
 
+  getClipPath(){
+    return this.sanitizer.bypassSecurityTrustStyle(this.arc_style_2);
+  }
+
   startTimer(): void {
     if (this.reset_text == 'RESET' && this.reset == 0) {
       this.resetTimer();
       this.start_text = 'START OVER';
-      this.arc_style = "animation-play-state: paused;";
+      this.arc_style = "paused";
     }
 
     if (this.paused == null || this.paused <= 0) {
@@ -122,10 +131,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.reset_text = 'STOP';
       this.reset = 0;
       this.paused = setInterval(() => this.update(), 100);
-      this.arc_style = '';
+      this.arc_style = 'running';
       this.start_text = 'START';
     }
   }
+
 
   pauseTimer() {
     var t = this.paused;
@@ -138,7 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.state = 0;
       this.setCookies();
       // set stop cookie = 1;
-      this.arc_style = "animation-play-state: paused;";
+      this.arc_style = "paused";
       this.titleService.setTitle( this.title + " - Paused" );
     } else {
       this.lastUpdated = new Date().getTime();
@@ -146,7 +156,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.paused = setInterval(() => this.update(), 100);
       // Change the cookie & set stop = 0
       this.setCookies();
-      this.arc_style = '';
+      this.arc_style = 'running';
     }
   }
 
@@ -248,6 +258,34 @@ export class AppComponent implements OnInit, OnDestroy {
     this.minutes = ('00' + val.getMinutes()).substr(-2);
     this.seconds = ('00' + val.getSeconds()).substr(-2);
 
+
+    let k = val.getSeconds();
+    if(k>=0 && k<=15)
+      {
+          var z= (100/15)*k;
+          this.arc_style_2 ="polygon(50% 50%,"+String(z)+"% 0% ,"+String(z)+"% 0%,"+String(z)+"% 0%,"+String(z)+"% 0%,0% 0%)";
+           
+      }
+      else if(k>15 && k<=30)
+      {
+          var z= (100/15)*(k-15);
+          this.arc_style_2="polygon(50% 50%,100% "+String(z)+"% ,100% "+String(z)+"%,100% "+String(z)+"%,100% 0%,0% 0%) ";
+          
+      }
+      else if(k>30 && k<=45)
+      {
+          var z= ((100/15)*(k-30));
+          var r=100-z;
+          this.arc_style_2="polygon(50% 50%,"+String(r)+"% 100% ,"+String(r)+"% 100%,100% 100%,100% 0%,0% 0%)";
+          
+      }
+      else if( k>45 && k<=60)
+      {
+          var z= ((100/15)*(k-45));
+          var r=100-z;
+          this.arc_style_2="polygon(50% 50%,0% "+String(r)+"% ,0% 100%,100% 100%,100% 0%,0% 0%)";
+      }
+
     this.lastUpdated = now;
     this.setCookies();
     this.saveTimerState();
@@ -329,8 +367,37 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (this.cookieService.check('main-seconds')) {
       this.seconds = parseInt(this.cookieService.get('main-seconds'));
+      let k=this.seconds;
+      if(k>=1 && k<=15)
+      {
+          var z= (100/15)*k;
+          this.arc_style_2 ="polygon(50% 50%,"+String(z)+"% 0% ,"+String(z)+"% 0%,"+String(z)+"% 0%,"+String(z)+"% 0%,0% 0%)";
+           
+      }
+      else if(k>15 && k<=30)
+      {
+          var z= (100/15)*(k-15);
+          this.arc_style_2="polygon(50% 50%,100% "+String(z)+"% ,100% "+String(z)+"%,100% "+String(z)+"%,100% 0%,0% 0%) ";
+          
+      }
+      else if(k>30 && k<=45)
+      {
+          var z= ((100/15)*(k-30));
+          var r=100-z;
+          this.arc_style_2="polygon(50% 50%,"+String(r)+"% 100% ,"+String(r)+"% 100%,100% 100%,100% 0%,0% 0%)";
+          
+      }
+      else if( k>45 && k<=60)
+      {
+          var z= ((100/15)*(k-45));
+          var r=100-z;
+          this.arc_style_2="polygon(50% 50%,0% "+String(r)+"% ,0% 100%,100% 100%,100% 0%,0% 0%)";
+          
+      }
     } else {
       this.seconds = 0;
+
+      this.arc_style_2 = "polygon(50% 50%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%)";
     }
   }
 

@@ -25,7 +25,10 @@
           ><!--<span class="seconds">{{ seconds }}</span>-->
         </div>
   
-          <div id="arc" style="{{arc_style}}" [ngClass]="{arc:seconds!='59'}"></div>
+          <div id="arc"
+          [style.animation-play-state]="arc_style"
+          [style.clip-path]="getClipPath()" [ngClass]="{arc:seconds!='59'}"></div>
+
       </div>
 
 

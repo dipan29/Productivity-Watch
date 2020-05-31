@@ -149,7 +149,7 @@ button{
   border: 10px solid blueviolet;
   clip-path: polygon(50% 50%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%);
   transform: rotateZ(45deg);
-  animation: circlearc 60s infinite linear forwards;
+  // animation: circlearc 60s infinite linear forwards;
 }
 @keyframes circlearc {
   25% {
