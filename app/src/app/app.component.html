@@ -33,7 +33,7 @@
 
 
       <div
-      class="button-row pt-2 mb-3 text-center"
+      class="button-row pt-2 mb-3 d-flex justify-content-center"
       *ngIf="paused || state || start_text == 'START OVER'"
     >
       <!-- <div class="col text-center"> -->
@@ -43,7 +43,7 @@
         color="primary"
         (click)="startTimer()"
       >
-        {{ start_text }}
+        <i class="fa fa-play"></i>
       </button>
       <button
         *ngIf="paused == -1"
@@ -51,7 +51,7 @@
         color="primary"
         (click)="startTimer()"
       >
-        RESUME
+        <i class="fa fa-play"></i>
       </button>
       <button
         *ngIf="paused > 0"
@@ -59,11 +59,12 @@
         color="accent"
         (click)="pauseTimer()"
       >
-        PAUSE
+        <i class="fa fa-pause"></i>
       </button>
-      <button *ngIf="state" mat-raised-button (click)="lapTimer()">LAP</button>
+      <button *ngIf="state" mat-raised-button (click)="lapTimer()"><i class="fa fa-plus"></i></button>
       <button mat-raised-button color="warn" (click)="resetTimer()">
-        {{ reset_text }}
+        <i *ngIf="reset_text === 'STOP'" class="fa fa-stop"></i>
+        <i *ngIf="reset_text === 'RESET'" class="fa fa-refresh"></i>
       </button>
       <!-- </div> -->
     </div>
@@ -81,26 +82,32 @@
   <div *ngIf="reset" class="row w-100 mx-auto">
       <div class="col">
         <div class="row mb-3">
-          <input
-            #textbox
-            type="text"
-            class="col-9 mr-2"
-            placeholder="{{ add_placeholder }}"
-            [(ngModel)]="tag_name"
-            required
-            aria-describedby="tag-add"
-          />
+          <div class="col-9 px-2">
+            <input
+              #textbox
+              type="text"
+              class="w-100"
+              placeholder="{{ add_placeholder }}"
+              [(ngModel)]="tag_name"
+              required
+              aria-describedby="tag-add"
+            />
 
+          </div>
           
-      
+          
+          <div class="col-3 px-2">
             <button
-              class="col-2 form-button"
+              class="d-block w-100 h-100 form-button"
               type="button"
               id="tag-add"
               (click)="addTag()"
             >
               +
             </button>
+          </div>
+      
+            
           </div>
       </div>
     </div>
