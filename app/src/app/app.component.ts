@@ -17,7 +17,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'TapTimer';
 
-  public ver: string = '1.0.6';
+  public ver: string = '1.0.7';
   public showModal: number = 1;
 
   myColours: string[] = [
