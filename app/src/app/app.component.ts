@@ -17,7 +17,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'TapTimer';
 
-  public ver: string = '1.0.7';
+  public ver: string = '1.0.8';
   public showModal: number = 1;
 
   myColours: string[] = [
@@ -51,6 +51,8 @@ export class AppComponent implements OnInit, OnDestroy {
   reset_text: string = 'STOP';
   start_text: string = 'START';
   arc_style: string = "paused";
+
+  play_state: string = '';
 
   hours: any = 0;
   minutes: any = 0;
@@ -112,7 +114,17 @@ export class AppComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustStyle(this.arc_style_2);
   }
 
+  autoTimer(){
+    if(this.paused>0){
+      this.pauseTimer();
+    } else {
+      this.startTimer();
+    }
+
+  }
+
   startTimer(): void {
+    this.play_state = '';
     if (this.reset_text == 'RESET' && this.reset == 0) {
       this.resetTimer();
       this.start_text = 'START OVER';
@@ -148,6 +160,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.state = 0;
       this.setCookies();
       // set stop cookie = 1;
+      this.play_state = 'animation-play-state: paused;';
       this.arc_style = "paused";
       this.titleService.setTitle( this.title + " - Paused" );
     } else {

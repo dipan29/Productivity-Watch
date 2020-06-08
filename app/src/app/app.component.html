@@ -12,11 +12,11 @@
         </h2>
       </button>
   
-      <div class="clock" *ngIf="state || paused">
+      <div class="clock" *ngIf="state || paused" (click)="autoTimer()">
         <div class="box">
-          <div class="wave -one"></div>
-          <div class="wave -two"></div>
-          <div class="wave -three"></div>
+        <div class="wave -one" style="{{play_state}}"></div>
+          <div class="wave -two" style="{{play_state}}"></div>
+          <div class="wave -three" style="{{play_state}}"></div>
         </div>
         <!-- <div class="col text-center"> -->
         <div class="main">
@@ -27,7 +27,7 @@
   
           <div id="arc"
           [style.animation-play-state]="arc_style"
-          [style.clip-path]="getClipPath()" [ngClass]="{arc:seconds!='59'}"></div>
+          [style.clip-path]="getClipPath()" [ngClass]="{arc:seconds!='00'}"></div>
 
       </div>
 
